@@ -1,0 +1,1130 @@
+<html>
+<head>
+	<title></title>
+<style>
+
+
+.main-container {
+            width: 90%;
+            max-width: 900px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+		 /* Center the container */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .quiz-container {
+            margin-top: 20px;
+        }
+ .question-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            display: none;
+            /* Hide all questions initially */
+            min-height: 150px;
+            /* Minimum height for the question container */
+            max-height: 300px;
+            /* Optional: Max height for very large questions */
+            overflow: auto;
+            /* Add scroll if content exceeds the container */
+        }
+			 .question-container.active {
+            display: block;
+            /* Only show the active question */
+        }
+
+
+h1 {
+    text-align: center;
+}
+
+.audio-player {
+    margin-bottom: 20px;
+}
+
+#track-title {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+audio {
+    width: 100%;
+}
+
+.audio-controls {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Space between buttons */
+}
+
+.audio-controls button {
+    padding: 10px 15px;
+    font-size: 1em;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    background-color: #007bff; /* Default button color */
+    transition: background-color 0.3s ease;
+}
+
+.audio-controls button:hover {
+    background-color: #0056b3; /* Darker color on hover */
+}
+
+#playlist {
+    list-style: none;
+    padding: 0;
+}
+
+#playlist li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+#playlist li.active {
+    background-color: #f0f0f0;
+}
+
+#quiz-container {
+    margin-bottom: 40px;
+}
+
+#question {
+    font-size: 20px;
+    margin-bottom: 50px;
+}
+
+#options button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#options button:hover {
+    background-color: #0056b3;
+}
+
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.navigation-buttons button {
+    padding: 10px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#play-button {
+    background-color: #1aa142;
+}
+
+#play-button:hover {
+    background-color: #9ba7b4;
+}
+
+#stop-button {
+    background-color: #FF0000;
+}
+
+#stop-button:hover {
+    background-color: #9ba7b4;
+}
+
+#prev-button {
+    background-color:#F6358A;
+}
+
+#prev-button:hover {
+    background-color: #9ba7b4;
+}
+
+#next-button {
+    background-color:#0059FF;
+}
+
+#next-button:hover {
+    background-color: #9ba7b4;
+}
+
+#submit-button {
+    background-color: #00FF00;
+}
+
+#submit-button:hover {
+    background-color: #9ba7b4;
+}
+
+#result {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#retake-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    background-color:  #FF0000; /* Red color for retake button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+}
+
+#retake-button:hover {
+    background-color:  #FF0000; /* Darker red on hover */
+}
+
+/* Navigation Question Buttons */
+
+#nav-bar {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px; /* Space between buttons */
+}
+
+#nav-bar button {
+    padding: 0; /* Remove extra padding */
+    width: 40px; /* Fixed width for compact buttons */
+    height: 30px; /* Fixed height for compact buttons */
+    background-color: #007bff; /* Blue background */
+    color: white;
+    border: none;
+    border-radius: 3px; /* Slightly rounded corners */
+    font-size: 12px; /* Smaller, consistent font size */
+    font-weight: normal; /* Normal weight for clean appearance */
+    text-align: center; /* Center align text horizontally */
+    line-height: 30px; /* Align text vertically by matching button height */
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#nav-bar button:hover {
+    background-color: #0056b3; /* Slightly darker color on hover */
+    transform: scale(1.05); /* Minimal zoom effect on hover */
+}
+
+#nav-bar button:active {
+    transform: scale(0.95); /* Slight shrink effect on click */
+}
+
+
+
+/* Ensure to add this CSS to your existing stylesheet */
+
+select {
+    width: 150PX; /* Make the select element take the full width of its container */
+    height: 42PX;
+    padding: 10px; /* Add padding for better spacing inside the select box */
+    font-size: 15px; /* Increase the font size */
+    border: 1px solid #ddd; /* Light grey border */
+    border-radius: 5px; /* Rounded corners */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+select option {
+    font-size: 16px; /* Increase the font size for options */
+}
+
+
+/* Prevent text selection */
+body {
+    -webkit-user-select: none; /* For Safari and Chrome */
+    -moz-user-select: none; /* For Firefox */
+    -ms-user-select: none; /* For IE10+ */
+    user-select: none; /* Standard syntax */
+}
+
+</style>
+</head>
+<body>
+    <div class="main-container">
+        <h1>APP-Mock Test</h1>
+        <div id="quiz-container" class="quiz-container">
+        
+        <!-- Voice Selection -->
+        <div id="voice-selection">
+            <label for="voice-select">Select Voice:</label>
+            <select id="voice-select">
+                <!-- Options will be dynamically added here -->
+            </select>
+        </div>
+        
+        <div id="nav-bar">
+            <!-- Buttons for navigating between questions will be dynamically added here -->
+        </div>
+                 <br>   <br>
+        <!-- Quiz Section -->
+        <div id="quiz-container">
+            <div id="question">Question will appear here</div>
+            
+            <!-- Drop-List Container -->
+            <div id="drop-list-container">
+                <!-- Drop-lists will be dynamically inserted here -->
+            </div>
+
+            <div id="options"></div>
+                 <br>  <br>       
+            <!-- Navigation Bar -->
+            <div class="navigation-buttons">
+                <button id="prev-button">Previous</button>
+                <button id="play-button">Play</button>
+                <button id="stop-button">Stop</button>
+                <button id="next-button">Next</button>
+                <button id="submit-button">Submit</button>
+            </div>
+
+            <div id="result"></div>
+            <button id="retake-button" style="display: none;">Retake Quiz</button> <!-- Hidden Retake button -->
+        </div>
+    </div>
+</div>
+    </div>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const questions = [
+
+
+                {
+                    type: 'drop-list',
+                    text: 'Q1. As soon as you are licensed it is <span class="drop-slot" id="slot1"></span>   that you keep in contact with  <span class="drop-slot" id="slot2"></span>  and respond to any letters, emails or  <span class="drop-slot" id="slot3"></span> forms of communication ',
+                    options: ['Select an option:', ' Importent', 'important', 'operator', 'Tfl', 'PCO', 'other'],
+                    correctAnswers: {
+                        slot1: 'important',
+                        slot2: 'Tfl',
+                        slot3: 'other'
+                    }
+                },
+                // Add more questions as needed
+
+                {
+                    type: 'drop-list',
+
+                    text: 'Q2. If the licence <span class="drop-slot" id="slot1"></span>  fixed to a PHV are damaged, lost, or stolen the vehicle  <span class="drop-slot" id="slot2"></span>   should contact TfL immediately <span class="drop-slot" id="slot3"></span> ',
+                    options: ['Select an option:', 'disck', 'discs', 'purchage', 'owner', 'so', 'see'],
+                    correctAnswers: {
+                        slot1: 'discs',
+                        slot2: 'owner',
+                        slot3: 'so'
+                    }
+                },
+
+                {
+                    type: 'drop-list',
+
+                    text: 'Q3.	Heathrow Airport has its own set of <span class="drop-slot" id="slot1"></span>   which you can find online. You  <span class="drop-slot" id="slot2"></span>    know about these in case you <span class="drop-slot" id="slot3"></span> a booking to or from the airport.',
+                    options: ['Select an option:', 'could', 'get', 'got', 'should', 'bylaws', 'byelaws'],
+                    correctAnswers: {
+                        slot1: 'byelaws',
+                        slot2: 'should',
+                        slot3: 'get'
+                    }
+                },
+
+                {
+                    type: 'drop-list',
+
+                    text: ' Q4.   If a passenger is <span class="drop-slot" id="slot1"></span>   or violent, tell your operator immediately and  <span class="drop-slot" id="slot2"></span>  them the passenger’s  <span class="drop-slot" id="slot3"></span>  name and address if you know it.',
+                    options: ['Select an option:', 'Aggressive', 'gave', 'aggressive', 'give', 'full', 'contact'],
+                    correctAnswers: {
+                        slot1: 'aggressive',
+                        slot2: 'give',
+                        slot3: 'full'
+                    }
+                },
+
+                {
+                    type: 'drop-list',
+
+                    text: 'Q5.  You should never make <span class="drop-slot" id="slot1"></span>  or jokes about someone’s age <span class="drop-slot" id="slot2"></span>  religion, disability <span class="drop-slot" id="slot3"></span>   orientation or gender identity.',
+                    options: ['Select an option:', 'comments', 'rase', 'race', 'sax', 'coment', 'sexual'],
+                    correctAnswers: {
+                        slot1: 'comments',
+                        slot2: 'race',
+                        slot3: 'sexual'
+                    }
+                },
+
+
+                {
+                    type: 'drop-list',
+
+                    text: 'Q6.  The <span class="drop-slot" id="slot1"></span>  you drive, the less time you have to do something to avoid a <span class="drop-slot" id="slot2"></span>  The resulting <span class="drop-slot" id="slot3"></span>  also become more serious as speed increases.',
+                    options: ['Select an option:', 'faster', 'quicker', 'collision', 'accident', 'injuries', 'injurie'],
+                    correctAnswers: {
+                        slot1: 'faster',
+                        slot2: 'collision',
+                        slot3: 'injuries'
+                    }
+                },
+
+
+                {
+                    type: 'drop-list',
+
+                    text: 'Q7. Be <span class="drop-slot" id="slot1"></span>  of where you pick up and drop off <span class="drop-slot" id="slot2"></span>  users. Avoid places where the pavement is on a <span class="drop-slot" id="slot3"></span> ',
+                    options: ['Select an option:', 'careful', 'wheelchair', 'carefully', 'willchair', 'hill ', 'slope'],
+                    correctAnswers: {
+                        slot1: 'careful',
+                        slot2: 'wheelchair',
+                        slot3: 'slope'
+                    }
+                },
+
+
+                {
+                    type: 'drop-list',
+
+                    text: 'Q8. You do not need to give your <span class="drop-slot" id="slot1"></span>  and can report <span class="drop-slot" id="slot2"></span>  but the more information you can give the <span class="drop-slot" id="slot3"></span>',
+                    options: ['Select an option:', 'details', 'correct', 'anonymously', 'anonimously', 'better', 'ditails'],
+                    correctAnswers: {
+                        slot1: 'details',
+                        slot2: 'anonymously',
+                        slot3: 'better'
+                    }
+                },
+
+
+                {
+                    type: 'drop-list',
+
+                    text: 'Q9. Assistance dogs are highly trained ‘working <span class="drop-slot" id="slot1"></span>   so should not be treated like pets. Do not  <span class="drop-slot" id="slot2"></span>  or feed assistance dogs or <span class="drop-slot" id="slot3"></span>   them in any way.',
+                    options: ['Select an option:', 'animals', 'animal', 'stroke', 'strike', 'distract', 'deestract'],
+                    correctAnswers: {
+                        slot1: 'animals',
+                        slot2: 'stroke',
+                        slot3: 'distract'
+                    }
+                },
+
+
+                {
+                    type: 'drop-list',
+
+                    text: 'Q10. You should not <span class="drop-slot" id="slot1"></span>  the personal details of  <span class="drop-slot" id="slot2"></span> passenger with <span class="drop-slot" id="slot3"></span> other passenger.',
+                    options: ['Select an option:', 'give', 'share', 'one', 'everyone', 'any', 'anyone'],
+                    correctAnswers: {
+                        slot1: 'share',
+                        slot2: 'one',
+                        slot3: 'any'
+                    }
+                },
+
+
+                {
+                    type: 'drop-list',
+
+                    text: 'Q11.  you  <span class="drop-slot" id="slot1"></span> tell TFL immediately if you are arrested <span class="drop-slot" id="slot2"></span>  with, convicted or cautioned for <span class="drop-slot" id="slot3"></span>  crime.',
+                    options: ['Select an option:', 'should', 'must', 'charged', 'charge', 'any', 'every'],
+                    correctAnswers: {
+                        slot1: 'must',
+                        slot2: 'charged',
+                        slot3: 'any'
+                    }
+                },
+
+
+
+                {
+                    type: 'drop-list',
+
+                    text: 'Q12. You must be <span class="drop-slot" id="slot1"></span>  or older <span class="drop-slot" id="slot2"></span>  you <span class="drop-slot" id="slot3"></span>   for your licence, there is no upper age limit.',
+                    options: ['Select an option:', 'age', 'aged', 'when', 'then', 'apply', 'Apply'],
+                    correctAnswers: {
+                        slot1: 'aged',
+                        slot2: 'when',
+                        slot3: 'apply'
+                    }
+                }, {
+                    type: 'drop-list',
+
+                    text: 'Q13.  If there <span class="drop-slot" id="slot1"></span>  any restrictions on a driver\'s right to  <span class="drop-slot" id="slot2"></span> and work in the UK, TFL will add an <span class="drop-slot" id="slot3"></span> condition to the licence.',
+                    options: ['Select an option:', 'is', 'are', 'live', 'leave', 'appropriate', 'Appropriate'],
+                    correctAnswers: {
+                        slot1: 'are',
+                        slot2: 'live',
+                        slot3: 'appropriate'
+                    }
+                },
+
+                {
+                    type: 'drop-list',
+
+                    text: 'Q14:  Every PHV must <span class="drop-slot" id="slot1"></span> hire or reward insurance The insurance  <span class="drop-slot" id="slot2"></span>  must be valid when the vehicle is licensed, and at all times when the vehicle is  <span class="drop-slot" id="slot3"></span>  used as a PHV.',
+                    options: ['Select an option:', 'have', 'has', 'policy', 'policie', 'being', 'been'],
+                    correctAnswers: {
+                        slot1: 'have',
+                        slot2: 'policy',
+                        slot3: 'being'
+                    }
+                },
+
+                {
+                    type: 'drop-list',
+
+                    text: 'Q15. we <span class="drop-slot" id="slot1"></span>  you to carry details of the vehicle\'s valid hire orreward  <span class="drop-slot" id="slot2"></span>  policy whenever you are  <span class="drop-slot" id="slot3"></span>',
+                    options: ['Select an option:', 'encourage', 'recommend', 'insurance', 'insurances', 'working', 'work'],
+                    correctAnswers: {
+                        slot1: 'encourage',
+                        slot2: 'insurance',
+                        slot3: 'working'
+                    }
+                },
+
+                {
+                    type: 'drop-list',
+
+                    text: 'Q16. There may be <span class="drop-slot" id="slot1"></span>  where TFL <span class="drop-slot" id="slot2"></span>   important information about the vehicle you are  <span class="drop-slot" id="slot3"></span>',
+                    options: ['Select an option:', 'chance', ' circumstances', 'have', 'has', 'driver', 'driving'],
+                    correctAnswers: {
+                        slot1: ' circumstances',
+                        slot2: 'has',
+                        slot3: 'driving'
+                    }
+                },
+
+                // Add more drag and drop questions here...
+
+                // Radio Questions
+                {
+                    type: 'radio',
+                    text: 'Q17.<b> Is it possible to have a licence issued for a period shorter than 3 years?</b>',
+                    options: ['A) Yes, the letter that comes with the licence will explain why', 'B) No', 'C) Yes, but only if over 65', 'D) All above', ],
+                    correctAnswer: 'A) Yes, the letter that comes with the licence will explain why'
+                },
+
+                {
+                    type: 'radio',
+                    text: 'Q18. What to do when you lose your badge or licence?',
+                    options: ['A) Continue working as normal', 'B) Report it to the police', 'C) Report it to TFL immediately', ],
+                    correctAnswer: 'C) Report it to TFL immediately'
+                },
+
+
+                {
+                    type: 'radio',
+                    text: 'Q19. If for any reason your PHV Driver.s Licence is revoked you must return it to TFL within?',
+                    options: ['A) 14 days', 'B) 7 days', 'C) 21 days', 'D) 45 days', ],
+                    correctAnswer: 'B) 7 days'
+                },
+
+
+                {
+                    type: 'radio',
+                    text: 'Q20. What is the DBS?',
+                    options: ['A) The DBS is a private company that does checks on people.s backgrounds', 'B) The DBS is a private company authorised by TFL to rent private hire vehicles', 'C) The DBS is a public body that does checks on people.s backgrounds', 'D) All above'],
+                    correctAnswer: 'C) The DBS is a public body that does checks on people.s backgrounds'
+                },
+
+                {
+                    type: 'radio',
+                    text: ' Q21. What you must do if you\'re disqualified from driving?',
+                    options: ['A) Inform TFL immediately - keep you badge and licence safe at home until the disqualification period ends', 'B) Stop driving only - there is no need to notify TFL', 'C) Inform TFL immediately and return you PHV Driver’s Licence and badge to TFL', 'D) continue driving only - there is no need to notify TFL'],
+                    correctAnswer: 'C) Inform TFL immediately and return you PHV Driver’s Licence and badge to TFL'
+                },
+
+                {
+                    type: 'radio',
+                    text: ' Q22. What is a vehicle inspection?',
+                    options: ['A)  An annual vehicle test done together with an MOT test', 'B) not for The PHV driver', 'C) An annual vehicle test at one TFL inspection centres to prove that the vehicle meets all the licensing requirements', 'D) An annual test at your main dealer'],
+                    correctAnswer: 'C) An annual vehicle test at one TFL inspection centres to prove that the vehicle meets all the licensing requirements'
+                },
+
+                {
+                    type: 'radio',
+                    text: ' Q23. When does a vehicle licensing inspection needs to be done?',
+                    options: ['A) Before you can use your vehicle for private hire purposes', 'B) Within 7 days from the day, you started using it for private hire purposes', 'C) Within 14 days from the day, you started using it for private hire purposes', 'D) Within 28 days from the day, you started using it for private hire purposes'],
+                    correctAnswer: 'A) Before you can use your vehicle for private hire purposes'
+                }, {
+                    type: 'radio',
+                    text: ' Q24. Are PHV Drivers allowed to carry unaccompanied children in their vehicles?',
+                    options: ['A) Yes, but only if the journey is paid in advance', 'B) No, all children must be accompanied by adults', 'C) Yes, but your operator should give you the name of the adult who will be meeting the child at the end of the journey', 'D) All above'],
+                    correctAnswer: 'C) Yes, but your operator should give you the name of the adult who will be meeting the child at the end of the journey'
+                },
+
+
+
+
+                // Add more radio questions here...
+
+                // Checkbox Questions
+                {
+                    type: 'checkbox',
+                    text: 'Q25. The information recorded by your operator includes  (2 correct answers) ',
+                    options: ['A) The registration number or other identification of the vehicle that will carry out the booking', 'B) The main destination', 'C) The preferred type of payment', 'D) your address'],
+                    correctAnswers: ['A) The registration number or other identification of the vehicle that will carry out the booking', 'B) The main destination']
+                }, {
+                    type: 'checkbox',
+                    text: 'Q26. When picking up passengers you must (2 correct answers)',
+                    options: ['A) Not wait in local car parks or residential streets', 'B) Wear a suit & tie', 'C) Use an official car park', 'D) You can park anywhere'],
+                    correctAnswers: ['A) Not wait in local car parks or residential streets', 'C) Use an official car park']
+                },
+
+                {
+                    type: 'checkbox',
+                    text: 'Q27. You should tell your operator as soon as your passenger (2 correct answers)',
+                    options: ['A) Decides to change the destination of the journey', 'B) Asks you to pick up extra passengers or has extra luggage', 'C) Wants to use your WIFI', 'D) use google navigation'],
+                    correctAnswers: ['A) Decides to change the destination of the journey', 'B) Asks you to pick up extra passengers or has extra luggage', ]
+                }, {
+                    type: 'checkbox',
+                    text: 'Q28.  Your operator is responsible for (2 correct answers)',
+                    options: ['A) Servicing your private PHV vehicle', 'B) Agreeing a fare for the journey with the passenger', 'C) arrange for your lunch', 'D) Giving them an accurate estimate before a journey starts'],
+                    correctAnswers: ['B) Agreeing a fare for the journey with the passenger', 'D) Giving them an accurate estimate before a journey starts']
+                },
+
+                {
+                    type: 'checkbox',
+                    text: 'Q29.  If your passenger is seriously ill (2 correct answers)',
+                    options: ['A) You should always physically check the passenger whether you have had first aid training or not', 'B) Call the emergency services on 999 immediately and follow their instructions', 'C) You should not try to physically check the passenger or administer first aid yourself unless you are following the instructions of the emergency services or a medical professional, or you have had appropriate first aid or medical training', 'D) move them out of the vehicle as quickly as possible'],
+                    correctAnswers: ['B) Call the emergency services on 999 immediately and follow their instructions', 'C) You should not try to physically check the passenger or administer first aid yourself unless you are following the instructions of the emergency services or a medical professional, or you have had appropriate first aid or medical training']
+                },
+
+                {
+                    type: 'checkbox',
+                    text: 'Q30. When picking up or dropping off passengers in a bus lane you must  (Select 2 answer)',
+                    options: ['A) Pay careful attention to cyclists and motorcyclists', 'B) Use your hazard lights', 'C) Enter and leave the bus lane in the most direct and safe way', 'D) bus driver can wait for you'],
+                    correctAnswers: ['A) Pay careful attention to cyclists and motorcyclists', 'C) Enter and leave the bus lane in the most direct and safe way']
+                },
+
+                {
+                    type: 'checkbox',
+                    text: 'Q31. PCNs can be: ( Select 2 answer)',
+                    options: [
+                        'A) Given out by on-street parking attendants or enforcement officers',
+                        'B) Can be sent to the registered keeper of the vehicle if the vehicle was caught on camera breaking the law', 'C) Given out by members of public if you\'re caught breaking the law', 'D) anyone can issue'
+                    ],
+                    correctAnswers: [
+                        'A) Given out by on-street parking attendants or enforcement officers',
+                        'B) Can be sent to the registered keeper of the vehicle if the vehicle was caught on camera breaking the law'
+                    ]
+                }, {
+                    type: 'checkbox',
+                    text: 'Q32. You can receive a Penalty Charge Notice for ( Select 2 answer )',
+                    options: ['A) Parking on pivate land', 'B) Driving in a bus lanes', 'C) Blocking a yellow box junction', 'D) for using flash light'],
+                    correctAnswers: ['B) Driving in a bus lanes', 'C) Blocking a yellow box junction']
+                },
+
+                {
+                    type: 'checkbox',
+                    text: 'Q33.  You should take extra care ( Select 2 answer ) ',
+                    options: ['A) When pulling out of junctions', 'B) Turning across traffic or passing cyclists or motorcyclists', 'C) When using horn or wipers', 'D) when you clean your vehicle '],
+                    correctAnswers: ['A) When pulling out of junctions', 'B) Call the police if it seems urgent']
+                },
+
+
+
+
+                {
+                    type: 'checkbox',
+                    text: 'Q34. To reduce ridesharing problems, it is always a good idea to ( Select 2 answer )',
+                    options: ['A) Refuse the booking', 'B) Turning across traffic or passing cyclists or motorcyclists', 'C) Confirm with each separate passenger that they have booked a ride-share as soon as you pick them up', 'D) Explain how many other people will pick up the predicted route'],
+                    correctAnswers: ['C) Confirm with each separate passenger that they have booked a ride-share as soon as you pick them up', 'D) Explain how many other people will pick up the predicted route']
+                },
+
+                {
+                    type: 'reading-understanding',
+                    "paragraph": 'Q35.  TfL believes it is important to provide a public transport system which all people can use, so that older and disabled people have the same opportunities to travel as all other people. TfL expects PHV drivers to deliver a high standard of customer service to all passengers, whatever their needs. However, we know that some passengers may need more help. This section gives you information, advice and tips on what you can do to help disabled passengers and other passengers that require assistance .',
+                    "question": 'Which of the following statements is correct?',
+
+                    options: [
+                        'A) TfL aims to ensure that all people, including older and disabled individuals, can use the public transport system.', 'B) As a PHV driver, you can wave at members of the public to signal you are free to take bookings.', 'C) TfL expects PHV drivers to maintain a high standard of customer service for all passengers, regardless of their needs.'
+                    ],
+                    correctAnswer: 'A) TfL aims to ensure that all people, including older and disabled individuals, can use the public transport system.'
+                }, {
+                    type: 'reading-understanding',
+                    paragraph: 'Q36.  If a police officer or TfL Authorised Officer asks to see your licence, you must let them see it there and then or within a maximum of seven days. The PHV operator(s) you work with must keep copies of your PHV driver’s licence and your DVLA/NI/EU/EEA driving licence. The letter that comes with your licence contains important information about your responsibilities as a London PHV driver, including any conditions you must meet. It is important that you read this letter carefully and make sure you understand it.',
+                    question: 'Which of the following statements is correct?',
+                    options: [
+                        'A) Ignore the request .',
+                        'B) Show it there and then or within a maximum of seven days.',
+                        'C) Show it within 30 days.'
+                    ],
+                    correctAnswer: 'B) Show it there and then or within a maximum of seven days.'
+                },
+
+            ];
+
+            let currentQuestionIndex = 0;
+            const userAnswers = new Array(questions.length).fill(null);
+            let voices = [];
+            let selectedVoice = null;
+            let isSpeaking = false;
+
+            // Elements
+            const questionElement = document.getElementById('question');
+            const optionsElement = document.getElementById('options');
+            const dropListContainer = document.getElementById('drop-list-container');
+            const prevButton = document.getElementById('prev-button');
+            const nextButton = document.getElementById('next-button');
+            const submitButton = document.getElementById('submit-button');
+            const resultElement = document.getElementById('result');
+            const playButton = document.getElementById('play-button');
+            const stopButton = document.getElementById('stop-button');
+            const retakeButton = document.getElementById('retake-button');
+            const navBar = document.getElementById('nav-bar');
+            const voiceSelect = document.getElementById('voice-select');
+
+            // Update UI based on speaking status
+            function updateUIState(speaking) {
+                isSpeaking = speaking;
+                playButton.disabled = speaking;
+                voiceSelect.disabled = speaking;
+                stopButton.disabled = !speaking;
+            }
+
+            // Populate the voice list
+            function populateVoiceList() {
+                voices = speechSynthesis.getVoices();
+
+                // Clear existing options
+                voiceSelect.innerHTML = '';
+
+                // Add default option
+                const defaultOption = document.createElement('option');
+                defaultOption.textContent = 'Select a voice';
+                defaultOption.value = '';
+                voiceSelect.appendChild(defaultOption);
+
+                // Add all available voices to the select element
+                voices.forEach((voice, index) => {
+                    const option = document.createElement('option');
+                    option.textContent = `${voice.name} (${voice.lang})`;
+                    option.value = index;
+                    voiceSelect.appendChild(option);
+
+                    // Set default voice (Microsoft Clara or first available)
+                    if (voice.name === 'Microsoft Clara Online (Natural) - English (Canada)') {
+                        voiceSelect.value = index;
+                        selectedVoice = voice;
+                    }
+                });
+
+                // If Microsoft Clara wasn't found, use the first voice
+                if (!selectedVoice && voices.length > 0) {
+                    selectedVoice = voices[0];
+                    voiceSelect.value = 0;
+                }
+            }
+
+            // Add event listener for voice selection
+            voiceSelect.addEventListener('change', (e) => {
+                const selectedIndex = e.target.value;
+                if (selectedIndex !== '') {
+                    // Stop any current speech
+                    speechSynthesis.cancel();
+                    updateUIState(false);
+
+                    // Set new voice
+                    selectedVoice = voices[selectedIndex];
+
+                    // Test the selected voice with a short message
+                    speak('Voice selected');
+                }
+            });
+            // Function to speak text with better control
+            function speak(text) {
+                // Stop any current speech
+                speechSynthesis.cancel();
+
+                const utterance = new SpeechSynthesisUtterance(text);
+                if (selectedVoice) {
+                    utterance.voice = selectedVoice;
+                }
+
+                // Update UI when speech starts
+                utterance.onstart = () => {
+                    updateUIState(true);
+                };
+
+                // Update UI when speech ends
+                utterance.onend = () => {
+                    updateUIState(false);
+                };
+
+                // Handle any errors
+                utterance.onerror = () => {
+                    updateUIState(false);
+                    console.error('Speech synthesis error occurred');
+                };
+
+                speechSynthesis.speak(utterance);
+            }
+
+            // Queue multiple texts to speak
+            function speakQueue(texts) {
+                speechSynthesis.cancel(); // Clear any existing speech
+
+                texts.forEach((text, index) => {
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    if (selectedVoice) {
+                        utterance.voice = selectedVoice;
+                    }
+
+                    // Only update UI state for first and last utterance
+                    if (index === 0) {
+                        utterance.onstart = () => updateUIState(true);
+                    }
+                    if (index === texts.length - 1) {
+                        utterance.onend = () => updateUIState(false);
+                    }
+
+                    utterance.onerror = () => {
+                        updateUIState(false);
+                        console.error('Speech synthesis error occurred');
+                    };
+
+                    speechSynthesis.speak(utterance);
+                });
+            }
+
+            // Load the current question
+            function loadQuestion() {
+                const currentQuestion = questions[currentQuestionIndex];
+                questionElement.innerHTML = '';
+                optionsElement.innerHTML = '';
+                dropListContainer.innerHTML = '';
+
+                // Clear previous nav buttons
+                navBar.innerHTML = '';
+
+                questions.forEach((_, index) => {
+                    const navButton = document.createElement('button');
+                    navButton.textContent = `Q ${index + 1}`;
+                    navButton.addEventListener('click', () => {
+                        currentQuestionIndex = index;
+                        loadQuestion();
+                    });
+                    if (index === currentQuestionIndex) {
+                        navButton.style.backgroundColor = '#0056b3'; // Highlight the current question button
+                    }
+                    navBar.appendChild(navButton);
+                });
+
+                if (currentQuestion.type === 'radio') {
+                    questionElement.innerHTML = currentQuestion.text;
+                    currentQuestion.options.forEach(option => {
+                        const label = document.createElement('label');
+                        const radioInput = document.createElement('input');
+                        radioInput.type = 'radio';
+                        radioInput.name = `question${currentQuestionIndex}`;
+                        radioInput.value = option;
+
+                        label.appendChild(radioInput);
+                        label.appendChild(document.createTextNode(option));
+                        optionsElement.appendChild(label);
+
+                        radioInput.addEventListener('change', () => {
+                            userAnswers[currentQuestionIndex] = option;
+                            const isCorrect = option === currentQuestion.correctAnswer;
+
+                            if (isCorrect) {
+                                label.style.color = 'green';
+                                speak(`Correct! The answer is: ${option}`);
+                            } else {
+                                label.style.color = 'red';
+                                speak(`Incorrect. The correct answer is: ${currentQuestion.correctAnswer}`);
+                            }
+                        });
+
+                        optionsElement.appendChild(document.createElement('br')); // Add a line break after each option
+                    });
+
+                    speak(currentQuestion.text.replace(/<[^>]+>/g, '')); // Announce the question without HTML tags
+                    currentQuestion.options.forEach(option => speak(option));
+                } else if (currentQuestion.type === 'drop-list') {
+                    questionElement.innerHTML = currentQuestion.text;
+
+                    // Speak the question text
+                    speak(currentQuestion.text.replace(/<[^>]+>/g, ''));
+
+                    // Create and add drop-list elements
+                    Object.keys(currentQuestion.correctAnswers).forEach((slotId) => {
+                        const slotElement = document.getElementById(slotId);
+                        const selectElement = document.createElement('select');
+
+                        // Add options to the select element
+                        currentQuestion.options.forEach(option => {
+                            const optionElement = document.createElement('option');
+                            optionElement.textContent = option;
+                            optionElement.value = option;
+                            selectElement.appendChild(optionElement);
+                        });
+
+                        // Add event listener for changes
+                        selectElement.addEventListener('change', () => {
+                            userAnswers[currentQuestionIndex] = userAnswers[currentQuestionIndex] || {};
+                            userAnswers[currentQuestionIndex][slotId] = selectElement.value;
+
+                            const isCorrect = selectElement.value === currentQuestion.correctAnswers[slotId];
+                            selectElement.style.backgroundColor = isCorrect ? '#98FF98' : '#FF2400';
+
+                            if (isCorrect) {
+                                speak(`Correct answer for ${slotId} is ${selectElement.value}`);
+                            } else {
+                                speak(`Incorrect. The correct answer for ${slotId} is ${currentQuestion.correctAnswers[slotId]}`);
+                            }
+                        });
+
+                        // Append the select element to the slot element
+                        slotElement.appendChild(selectElement);
+                    });
+
+                    // Speak the drop-list options only once
+                    setTimeout(() => {
+                        speak('Your  options are:');
+                        currentQuestion.options.forEach(option => speak(option));
+                    }, 100); // Adjust delay as needed to allow time for option elements to be added
+
+
+                } else if (currentQuestion.type === 'checkbox') {
+                    questionElement.innerHTML = currentQuestion.text;
+                    optionsElement.innerHTML = ''; // Clear previous options
+
+                    // Reset user answers for the current question to an empty array (clears previously selected answers)
+                    userAnswers[currentQuestionIndex] = [];
+
+                    currentQuestion.options.forEach(option => {
+                        const label = document.createElement('label');
+                        const checkboxInput = document.createElement('input');
+                        checkboxInput.type = 'checkbox';
+                        checkboxInput.value = option;
+
+                        label.appendChild(checkboxInput);
+                        label.appendChild(document.createTextNode(option));
+                        optionsElement.appendChild(label);
+
+                        checkboxInput.addEventListener('change', () => {
+                            // Initialize userAnswers for the current question if not present
+                            userAnswers[currentQuestionIndex] = userAnswers[currentQuestionIndex] || [];
+
+                            // Add or remove the selected option from userAnswers
+                            if (checkboxInput.checked) {
+                                userAnswers[currentQuestionIndex].push(option);
+                            } else {
+                                userAnswers[currentQuestionIndex] = userAnswers[currentQuestionIndex].filter(answer => answer !== option);
+                            }
+
+                            // Check if the selected answers are correct
+                            const isCorrect = currentQuestion.correctAnswers.every(answer => userAnswers[currentQuestionIndex].includes(answer)) &&
+                                userAnswers[currentQuestionIndex].length === currentQuestion.correctAnswers.length;
+
+                            // Color each checkbox based on whether it is correct or not
+                            optionsElement.querySelectorAll('input[type="checkbox"]').forEach(input => {
+                                if (currentQuestion.correctAnswers.includes(input.value)) {
+                                    input.parentElement.style.color = input.checked ? 'green' : 'black';
+                                } else {
+                                    input.parentElement.style.color = input.checked ? 'red' : 'black';
+                                }
+                            });
+
+                            // Provide feedback based on the correctness of the answers
+                            if (isCorrect) {
+                                speak('Correct. The correct answers are:');
+                                currentQuestion.correctAnswers.forEach(answer => {
+                                    speak(answer); // Speak each correct answer individually
+                                });
+                            } else {
+                                if (userAnswers[currentQuestionIndex].length < currentQuestion.correctAnswers.length) {
+                                    speak('Please select more options are correct.');
+                                } else {
+                                    speak('Incorrect. Please review your selections.');
+                                }
+                            }
+                        });
+
+                        optionsElement.appendChild(document.createElement('br')); // Add a line break after each option
+                    });
+
+                    // Speak the question text and checkbox options
+                    speak(currentQuestion.text.replace(/<[^>]+>/g, ''));
+                    currentQuestion.options.forEach(option => speak(option));
+                } else if (currentQuestion.type === 'reading-understanding') {
+                    questionElement.innerHTML = currentQuestion.paragraph + '<br><br>' + currentQuestion.question;
+                    currentQuestion.options.forEach(option => {
+                        const label = document.createElement('label');
+                        const radioInput = document.createElement('input');
+                        radioInput.type = 'radio';
+                        radioInput.name = `question${currentQuestionIndex}`;
+                        radioInput.value = option;
+
+                        label.appendChild(radioInput);
+                        label.appendChild(document.createTextNode(option));
+                        optionsElement.appendChild(label);
+
+                        radioInput.addEventListener('change', () => {
+                            userAnswers[currentQuestionIndex] = option;
+                            const isCorrect = option === currentQuestion.correctAnswer;
+
+                            if (isCorrect) {
+                                label.style.color = 'green';
+                                speak(`Correct! The answer is: ${option}`);
+                            } else {
+                                label.style.color = 'red';
+                                speak(`Incorrect. The correct answer is: ${currentQuestion.correctAnswer}`);
+                            }
+                        });
+
+                        optionsElement.appendChild(document.createElement('br')); // Add a line break after each option
+                    });
+
+                    speak(currentQuestion.paragraph);
+                    speak(currentQuestion.question.replace(/<[^>]+>/g, ''));
+                    currentQuestion.options.forEach(option => speak(option));
+                }
+
+                prevButton.disabled = currentQuestionIndex === 0;
+                nextButton.disabled = currentQuestionIndex === questions.length - 1;
+            }
+
+
+
+
+
+
+            // Function to submit the quiz
+            function submitQuiz() {
+                let score = 0;
+
+                questions.forEach((question, index) => {
+                    if (question.type === 'radio' && userAnswers[index] === question.correctAnswer) {
+                        score++;
+                    } else if (question.type === 'drop-list') {
+                        const correctAnswers = Object.values(question.correctAnswers);
+                        const userAnswer = Object.values(userAnswers[index] || {});
+                        if (correctAnswers.length === userAnswer.length && correctAnswers.every(ans => userAnswer.includes(ans))) {
+                            score++;
+                        }
+                    } else if (question.type === 'checkbox') {
+                        if (userAnswers[index].length === question.correctAnswers.length &&
+                            question.correctAnswers.every(answer => userAnswers[index].includes(answer))) {
+                            score++;
+                        }
+                    } else if (question.type === 'reading-understanding' && userAnswers[index] === question.correctAnswer) {
+                        score++;
+                    }
+                });
+
+                resultElement.textContent = `You scored ${score} out of ${questions.length}`;
+                retakeButton.style.display = 'block';
+            }
+
+            // Function to go to the next question
+            function nextQuestion() {
+                if (currentQuestionIndex < questions.length - 1) {
+                    currentQuestionIndex++;
+                    loadQuestion();
+                }
+            }
+
+            // Function to go to the previous question
+            function prevQuestion() {
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    loadQuestion();
+                }
+            }
+
+            // Initialize
+            populateVoiceList();
+            loadQuestion();
+
+            // Event Listeners
+            prevButton.addEventListener('click', prevQuestion);
+            nextButton.addEventListener('click', nextQuestion);
+            submitButton.addEventListener('click', submitQuiz);
+            retakeButton.addEventListener('click', () => {
+                userAnswers.fill(null);
+                resultElement.textContent = '';
+                retakeButton.style.display = 'none';
+                currentQuestionIndex = 0;
+                loadQuestion();
+            });
+
+            // Initialize
+            speechSynthesis.onvoiceschanged = () => {
+                populateVoiceList();
+                loadQuestion();
+            };
+
+            // Initial population attempt (for browsers that load voices immediately)
+            populateVoiceList();
+            loadQuestion();
+
+            // Event Listeners
+            prevButton.addEventListener('click', prevQuestion);
+            nextButton.addEventListener('click', nextQuestion);
+            submitButton.addEventListener('click', submitQuiz);
+            retakeButton.addEventListener('click', () => {
+                userAnswers.fill(null);
+                resultElement.textContent = '';
+                retakeButton.style.display = 'none';
+                currentQuestionIndex = 0;
+                loadQuestion();
+            });
+
+            // Play button for text-to-speech
+            playButton.addEventListener('click', () => {
+                const currentQuestion = questions[currentQuestionIndex];
+                if (currentQuestion.type === 'drop-list') {
+                    const texts = [
+                        currentQuestion.text.replace(/<[^>]+>/g, ''),
+                        'Your options are:',
+                        ...currentQuestion.options
+                    ];
+                    speakQueue(texts);
+                } else if (currentQuestion.type === 'checkbox') {
+                    const texts = [
+                        currentQuestion.text.replace(/<[^>]+>/g, ''),
+                        'Your options are:',
+                        ...currentQuestion.options
+                    ];
+                    speakQueue(texts);
+                } else {
+                    speak(questionElement.innerText);
+                }
+            });
+
+            // Stop button for text-to-speech
+            stopButton.addEventListener('click', () => {
+                speechSynthesis.cancel();
+                updateUIState(false);
+            });
+
+            // Initially disable stop button
+            stopButton.disabled = true;
+        });
+</script>
+</body>
+</html>

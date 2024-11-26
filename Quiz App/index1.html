@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Tests with Live Progress</title>
+    <style>
+         /* Body styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            color: #222;
+        }
+
+        /* Test container styles */
+        .test-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Test card styles */
+        .test-card {
+            background-color: #000;
+            width: 300px;
+            margin: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: white;
+        }
+        .test-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Test header styles */
+        .test-header {
+            background: linear-gradient(45deg, #ffd700, #ffa500);
+            color: black;
+            padding: 20px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Test description styles */
+        .test-description {
+            padding: 15px;
+            font-size: 16px;
+            color: #ccc;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        /* Status styles */
+        .status {
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            border-top: 1px solid #555;
+        }
+        .complete {
+            background: #ffd700;
+            color: black;
+        }
+        .incomplete {
+            background: #f44336;
+            color: white;
+        }
+
+        /* Test footer styles */
+        .test-footer {
+            padding: 15px;
+            text-align: center;
+        }
+
+        /* Test button styles */
+        .test-button {
+            padding: 12px 20px;
+            background: linear-gradient(45deg, #ffd700, #ffa500);
+            color: black;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.3s ease, transform 0.3s ease;
+            text-transform: uppercase;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .test-button:hover {
+            background: linear-gradient(45deg, #ffa500, #ffd700);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container" id="test-container"></div>
+
+    <script>
+        // Test data
+        const testData = [
+            { id: 1, title: "Mock Test 1", description: "This is a description of Mock Test 1. It covers basic general knowledge.", link: "https://121pcotraining.com/2-test-page/" },
+            { id: 2, title: "Mock Test 2", description: "This test covers reasoning skills. It is designed to challenge your logic.", link: "https://121pcotraining.com/mock-section-2/" },
+            { id: 3, title: "Mock Test 3", description: "A comprehensive test for mathematics, including algebra and geometry.", link: "https://121pcotraining.com/mock-section-3/" },
+            { id: 4, title: "Mock Test 4", description: "This test focuses on current affairs, perfect for competitive exams.", link: "https://121pcotraining.com/mock-section-4/" },
+            { id: 5, title: "Mock Test 5", description: "A test on history and political science for academic excellence.", link: "https://121pcotraining.com/mock-section-5/" },
+            { id: 6, title: "Mock Test 6", description: "Logical reasoning and puzzles test your critical thinking skills.", link: "https://121pcotraining.com/mock-section-6/" },
+            { id: 7, title: "Mock Test 7", description: "General science, including physics and biology topics.", link: "https://121pcotraining.com/mock-section-7/" },
+            { id: 8, title: "Mock Test 8", description: "A mock test on English grammar and vocabulary.", link: "https://121pcotraining.com/mock-section-8/" },
+            { id: 9, title: "Mock Test 9", description: "Practice test for advanced computer science concepts.", link: "https://121pcotraining.com/mock-section-9/" },
+            { id: 10, title: "Mock Test 10", description: "A special test focusing on time management skills.", link: "https://121pcotraining.com/mock-section-10/" }
+        ];
+
+        // Initialize progress data in localStorage if not already set
+        const initProgress = () => {
+            if (!localStorage.getItem('testProgress')) {
+                const progressData = testData.reduce((acc, test) => {
+                    acc[test.id] = false; // Initialize all tests as incomplete
+                    return acc;
+                }, {});
+                localStorage.setItem('testProgress', JSON.stringify(progressData));
+            }
+        };
+
+        // Update progress to mark test as complete
+        const updateProgress = (testId) => {
+            const progressData = JSON.parse(localStorage.getItem('testProgress'));
+            progressData[testId] = true; // Mark test as complete
+            localStorage.setItem('testProgress', JSON.stringify(progressData));
+        };
+
+        // Render test cards
+        const renderTests = () => {
+            const container = document.getElementById('test-container');
+            container.innerHTML = ''; // Clear existing content
+            const progressData = JSON.parse(localStorage.getItem('testProgress'));
+
+            testData.forEach(test => {
+                const card = document.createElement('div');
+                card.classList.add('test-card');
+
+                const header = document.createElement('div');
+                header.classList.add('test-header');
+                header.innerText = test.title;
+
+                const description = document.createElement('div');
+                description.classList.add('test-description');
+                description.innerText = test.description;
+
+                const status = document.createElement('div');
+                status.classList.add('status');
+                if (progressData[test.id]) {
+                    status.classList.add('complete');
+                    status.innerText = "Completed";
+                } else {
+                    status.classList.add('incomplete');
+                    status.innerText = "Incomplete";
+                }
+
+                const footer = document.createElement('div');
+                footer.classList.add('test-footer');
+
+                const button = document.createElement('button');
+                button.classList.add('test-button');
+                button.innerText = "Start Test";
+                button.onclick = () => {
+                    updateProgress(test.id);
+                    window.location.href = test.link;
+                };
+
+                footer.appendChild(button);
+                card.appendChild(header);
+                card.appendChild(description);
+                card.appendChild(status);
+                card.appendChild(footer);
+                container.appendChild(card);
+            });
+        };
+
+        // Initialize and render tests
+        initProgress();
+        renderTests();
+    </script>
+</body>
+</html>

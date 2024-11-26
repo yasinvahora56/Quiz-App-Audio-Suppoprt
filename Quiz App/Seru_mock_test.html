@@ -1,0 +1,1655 @@
+<html>
+
+<head>
+    <title>Seru Mock Test</title>
+    <style>
+        .container {
+            width: 95%;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #f8f8fa;
+            border: 0 0 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        h2 {
+            text-align: center;
+            color: #333;
+            font-size: 24px;
+            /* Adjusted font size for smaller display */
+            margin-bottom: 30px;
+        }
+        /* Timer */
+        
+        .timer-container {
+            width: 160px;
+            height: 40px;
+            margin-left: auto;
+            display: none;
+        }
+        
+        .timer {
+            font-size: 20px;
+            /* Reduced timer font */
+            font-weight: bold;
+            color: #F2D229;
+            background-color: #333;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+        }
+        
+        .quiz-wrapper {
+            width: 90%;
+            max-width: 1000px;
+            background-color: #ffffff;
+            border-radius: 6px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            padding: 0;
+            /* Remove padding to allow header to take full width */
+            position: relative;
+            overflow-y: auto;
+            max-height: 88vh;
+            /* Keeps container from expanding too tall */
+        }
+        
+        .quiz-header {
+            background-color: #F2D229;
+            color: white;
+            padding: 5px;
+            /* Adjust this for vertical padding */
+            font-size: 22px;
+            font-weight: bold;
+            border-radius: 5px 5px 0 0;
+            /* Rounded corners on the top */
+            border-bottom: 4px solid #F2D229;
+            /* Yellow line */
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            /* Remove margin to align with the container */
+            position: relative;
+            top: 0;
+            z-index: 10;
+        }
+        /* Result and Answer Review */
+        
+        #result,
+        #answer-review {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+        }
+        
+        #instruction {
+            font-size: 20px;
+            text-align: center;
+            font-weight: 600;
+            color: red;
+            margin-top: 10px;
+        }
+        
+        .quiz-content {
+            padding: 25px;
+            /* Increased padding for more spacious feel */
+        }
+        /* Question Container */
+        
+        .question-container {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 25px;
+            font-size: 16px;
+            display: none;
+        }
+        
+        .question-container h2 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .question-container p {
+            font-size: 18px;
+            /* Larger font for question text */
+            margin-bottom: 28px;
+            color: #444;
+        }
+        /* Dropdown styling */
+        
+        .question-container select {
+            width: 200px;
+            padding: 10px;
+            font-size: 16px;
+            /* Larger font size */
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            color: #333;
+        }
+        
+        .question-container select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        /* Question container for better spacing */
+        
+        .question-container .options {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            /* Left-align options */
+            margin-top: 10px;
+            width: 100%;
+            /* Full width for consistent alignment */
+        }
+        /* Styling for radio and checkbox labels */
+        
+        .question-container label {
+            font-size: 15px;
+            margin: -16px -8px -4px 20px;
+            display: block;
+            cursor: pointer;
+            color: #333;
+            line-height: 1.5;
+        }
+        /* Dropdown, Radio, and Checkbox Styling */
+        
+        .question-container select,
+        .question-container input[type="radio"],
+        .question-container input[type="checkbox"] {
+            transform: scale(1.1);
+            /* Slightly larger scale */
+            margin-right: 12px;
+        }
+        
+        .question-container .options label {
+            font-size: 14px;
+            /* Reduced label font size */
+            margin: 8px 0;
+            color: #333;
+        }
+        
+        .question-container .question-text {
+            font-weight: bold;
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: left;
+            /* Ensure question starts from the left */
+            word-wrap: break-word;
+            /* Allow wrapping of long questions */
+        }
+        
+        .question-container .options label:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .question-container .options input[type="radio"]:checked+label,
+        .question-container .options input[type="checkbox"]:checked+label {
+            background-color: #e6f7e6;
+            /* Slight green tint for checked state */
+            border-color: #28a745;
+            /* Green border for checked state */
+        }
+        
+        .question-container.active {
+            display: block;
+        }
+        /* Progress Bar */
+        
+        #progress-container {
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 20px;
+            margin: 10px 0;
+            position: relative;
+            /* Needed for absolute positioning of the percentage */
+        }
+        
+        #progress-bar {
+            width: 0;
+            /* Update this dynamically with JS */
+            height: 18px;
+            background-color: #F2D229;
+            border-radius: 20px;
+            transition: width 0.4s ease;
+        }
+        
+        #progress-percentage {
+            font-size: 16px;
+            position: absolute;
+            /* Change to absolute */
+            top: 50%;
+            /* Center vertically */
+            left: 50%;
+            /* Center horizontally */
+            transform: translate(-50%, -50%);
+            /* Center the text */
+            color: #333;
+            /* Ensure text is visible */
+        }
+        
+        .question-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            margin-top: -20px;
+            text-align: center;
+            align-items: center;
+        }
+        
+        .question-buttons button {
+            width: 35px;
+            /* Increased width to accommodate text */
+            height: 35px;
+            /* Same height as before */
+            border-radius: 5px;
+            background-color: #F2D229;
+            color: #333;
+            font-weight: bold;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            margin: 0 5px 5px 0;
+            /* display: flex; /* Added to center content */
+            align-items: center;
+            /* Vertical centering */
+            justify-content: center;
+            /* Horizontal centering */
+            padding: 0;
+            /* Remove padding to prevent overflow */
+        }
+        
+        .question-buttons button:hover {
+            background-color: #333;
+            color: #F2D229;
+        }
+        /* Control Buttons */
+        
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            position: relative;
+        }
+        
+        button {
+            font-size: 16px;
+            /* Larger font size for buttons */
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            padding: 10px 20px;
+            /* Larger padding */
+        }
+        
+        .next-btn,
+        .previous-btn {
+            background-color: #007BFF;
+            color: white;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        
+        .next-btn {
+            background-color: #007BFF;
+            color: white;
+        }
+        
+        .submit-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .reset-btn {
+            background-color: #ffc107;
+            color: black;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        /* Result Message */
+        /* Result and Review */
+        /* Result and Answer Review */
+        
+        #result,
+        #answer-review {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+        }
+        
+        .answer-review-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .answer-review-item strong {
+            color: #4A4A4A;
+            font-weight: bold;
+        }
+        /* Styling for user answer */
+        
+        .answer-review-item .user-answer {
+            color: #0056b3;
+            font-style: italic;
+        }
+        /* Styling for correct answer */
+        
+        .answer-review-item .correct-answer {
+            color: #28a745;
+            font-weight: bold;
+        }
+        /* Status Color Styling */
+        
+        .status-correct {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .status-incorrect {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        /* Additional styling for spacing */
+        
+        .answer-review-item hr {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border: 0;
+            border-top: 1px solid #ddd;
+        }
+        /* Icon styling */
+        
+        .emoji {
+            margin-left: 5px;
+            font-size: 1.2em;
+        }
+        /* Prevent text selection */
+        
+        body {
+            -webkit-user-select: none;
+            /* For Safari and Chrome */
+            -moz-user-select: none;
+            /* For Firefox */
+            -ms-user-select: none;
+            /* For IE10+ */
+            user-select: none;
+            /* Standard syntax */
+        }
+    </style>
+</head>
+
+<body>
+    <a href="https://121pcotraining.com/all-test-1-10/" style="margin:0 0 20px 60px;">
+        <link>Click here</a> if you want to go back
+    <div class="quiz-wrapper">
+        <div class="quiz-header">
+            121 PCO TRAINING QUIZ | Seru Mock section1
+            <div class="timer-container">
+                <div class="timer">Time Left: 45:00</div>
+            </div>
+        </div>
+        <div class="quiz-content">
+            <!-- Question Buttons -->
+            <div class="question-buttons" id="questionButtonsContainer"></div>
+
+            <!-- Progress Bar -->
+            <div id="progress-container">
+                <div id="progress-bar"></div>
+                <div id="progress-percentage">0%</div>
+            </div>
+
+            <div id="quiz-container">
+                <!-- Question Content Here -->
+            </div>
+
+            <!-- Buttons -->
+            <div class="button-container">
+                <button class="btn reset-btn" id="resetBtn" onclick="resetQuiz()">Reset</button>
+                <button class="btn previous-btn" id="previousBtn" onclick="goToPreviousQuestion()">Previous</button>
+                <button class="btn next-btn" id="nextBtn" onclick="goToNextQuestion()">Next</button>
+                <button class="btn submit-btn" id="submitBtn" onclick="submitQuiz()">Submit</button>
+            </div>
+
+            <!-- Result Display -->
+            <div id="result"></div>
+
+            <!-- Answer Review -->
+            <div id="answer-review" style="display:none;"></div>
+            <div id="instruction"></div>
+        </div>
+
+
+        <script>
+            let currentQuestion = 0; // Track the current question
+            const totalQuestions = 36; // Total number of questions
+            const quizData = [
+
+                {
+
+                    question: "Q 1.    %dropdown1%    or violent behaviour when at %dropdown2%   is  that you have received from a licensed London PHV  %dropdown3%  acceptable.",
+
+                          options: {
+
+                                
+                        dropdown1: ["Select an option", "Angry", "angry", "work", "works", "never", "ever"],
+
+                                dropdown2: ["Select an option", "Angry", "angry", "work", "works", "never", "ever"],
+
+                                dropdown3: ["Select an option", "Angry", "angry", "work", "works", "never", "ever"],
+
+                              
+                    },
+
+                          correctAnswers: ["Angry", "work", "never"]
+
+                        
+                },
+
+                {
+
+                    question: "Q 2.  If a passenger in your vehicle %dropdown1%     angry or violent you have a  %dropdown2%   to say that you will not accept that %dropdown3% or if that fails, and it is safe to do so, to ask them to leave .",
+
+                          options: {
+
+                                
+                        dropdown1: ["Select an option", "Becomes", "behaviour", "no right", "becomes", "right", "Behaviour"],
+
+
+                                dropdown2: ["Select an option", "Becomes", "behaviour", "no right", "becomes", "right", "Behaviour"],
+
+
+                                dropdown3: ["Select an option", "Becomes", "behaviour", "no right", "becomes", "right", "Behaviour"],
+
+
+                              
+                    },
+
+                          correctAnswers: ["becomes", "right", "behaviour"]
+
+                        
+                },
+
+
+
+                {
+
+                    question: "Q 3.    You should never  %dropdown1%    any bad behaviour  %dropdown2%   you for any %dropdown3%.",
+
+                          options: {
+
+                                
+                        dropdown1: ["Select an option", "Select an option:", "encourage", "reason", "accept", "on you", "towards", "reasons"],
+
+                                dropdown2: ["Select an option", "Select an option:", "encourage", "reason", "accept", "on you", "towards", "reasons"],
+
+                                dropdown3: ["Select an option", "Select an option:", "encourage", "reason", "accept", "on you", "towards", "reasons"],
+
+                              
+                    },
+
+                          correctAnswers: ["accept", "towards", "reason"]
+
+                        
+                },
+
+
+                {
+
+                          
+                    question: "Q 4.   Making sure your %dropdown1%    has given you  %dropdown2%   details, such as the passenger’sname, pick up point and  %dropdown3%.",
+
+                          options: {
+
+                                
+                        dropdown1: ["Select an option", "operators", "booking", "operator", "bookings", "destination", "drop off"],
+
+                                dropdown2: ["Select an option", "operators", "booking", "operator", "bookings", "destination", "drop off"],
+
+
+                                dropdown3: ["Select an option", "operators", "booking", "operator", "bookings", "destination", "drop off"],
+
+
+                              
+                    },
+
+                          correctAnswers: ["operator", "booking", "destination"]
+
+                        
+                },
+
+
+                {
+
+                          
+                    question: "Q 5.    If a passenger is aggressive or  %dropdown1%   tell your operator  %dropdown2%    and give them the passenger’s %dropdown3%    and address if you know it.",
+
+                          options: {
+
+                                
+                        dropdown1: ["Select an option", "full name", "violent", "immediately", "Violent", "immediate", "name"],
+
+                        dropdown2: ["Select an option", "full name", "violent", "immediately", "Violent", "immediate", "name"],
+
+                         dropdown3: ["Select an option", "full name", "violent", "immediately", "Violent", "immediate", "name"],
+
+                              
+                    },
+
+                          correctAnswers: ["violent", "immediately", "full name"]
+
+
+                        
+                },
+
+
+
+                {
+
+                          
+                    question: "Q 6.   When someone has taken  %dropdown1%   or has drunk alcohol, it can affect their ability to think or %dropdown2%   clearly and their behaviour can be %dropdown3%   to predict. In some cases they may become aggressive.",
+
+                          options: {
+
+                                
+                        dropdown1: ["Select an option", "drug", "communicate", "Difficult", "communication", "difficult", "drugs"],
+
+                                dropdown2: ["Select an option", "drug", "communicate", "Difficult", "communication", "difficult", "drugs"],
+
+                                dropdown3: ["Select an option", "drug", "communicate", "Difficult", "communication", "difficult", "drugs"],
+
+                              
+                    },
+
+                          correctAnswers: ["drugs", "communicate", "difficult"]
+
+                        
+                },
+
+                {
+
+                          
+                    question: "Q 7.      you have the right to refuse to take them in  %dropdown1%   vehicle  You can do this  %dropdown2%   you cannot be sure that they have given you the correct  %dropdown3%   or that they will be able to get out of your vehicle without help.",
+
+                          options: {
+
+                                
+                        dropdown1: ["Select an option", "address ", "Your", "because", "your", "Because", "destination"],
+
+                                dropdown2: ["Select an option", "address ", "Your", "because", "your", "Because", "destination"],
+
+                                dropdown3: ["Select an option", "address ", "Your", "because", "your", "Because", "destination"],
+
+                              
+                    },
+
+                          correctAnswers: ["your", "because", "address "]
+
+                        
+                },
+
+                {
+
+                          
+                    question: "Q 8.    %dropdown1%   certain things you can do to  %dropdown2%    the chance of someone being violent or aggressive  %dropdown3%    you.",
+
+                          options: {
+
+                                
+                        dropdown1: ["Select an option", "There is", "at you", "There are", "reduse", "towards", "reduce"],
+
+                                dropdown2: ["Select an option", "There is", "at you", "There are", "reduse", "towards", "reduce"],
+
+                                dropdown3: ["Select an option", "There is", "at you", "There are", "reduse", "towards", "reduce"],
+                              
+                    },
+
+                          correctAnswers: ["There are", "reduce", "towards"]
+
+                        
+                },
+
+                {
+
+                          
+                    question: "Q 9.    If the passenger is planning to  %dropdown1%    you, they will probably %dropdown2%    ofthe vehicle %dropdown3% .",
+
+                          options: {
+
+                                
+                        dropdown1: ["Select an option", "too", "fight", "get out", "hurt", "get off", "Too"],
+
+                                dropdown2: ["Select an option", "too", "fight", "get out", "hurt", "get off", "Too"],
+
+
+                                dropdown3: ["Select an option", "too", "fight", "get out", "hurt", "get off", "Too"],
+
+                              
+                    },
+
+                          correctAnswers: ["hurt", "get out", "too"]
+
+                        
+                },
+
+                {
+
+                          
+                    question: "Q 10.  If something happens %dropdown1%    tell your operator and %dropdown2%   necessary, also call the %dropdown3%    and/or an ambulance depending on the incident.",
+
+                          options: {
+
+                                
+                        dropdown1: ["Select an option", "to you", "If", "police", "at you", "if", "Police"],
+
+
+
+                                dropdown2: ["Select an option", "to you", "If", "police", "at you", "if", "Police"],
+
+
+
+                                dropdown3:  ["Select an option", "to you", "If", "police", "at you", "if", "Police"],
+
+
+                              
+                    },
+
+                          correctAnswers: ["to you", "if", "police"]
+
+                        
+                },
+
+                {
+
+                          
+                    question: "Q 11.   It is  %dropdown1%   to record and report  %dropdown2%    that almost happened, as well as ones that actually  %dropdown3%   happen.",
+
+                          options: {
+
+                                
+                        dropdown1: ["Select an option", "Important", "incidents", "dose", "incident", "did", "important"],
+
+                                dropdown2: ["Select an option", "Important", "incidents", "dose", "incident", "did", "important"],
+
+                                dropdown3: ["Select an option", "Important", "incidents", "dose", "incident", "did", "important"],
+
+                              
+                    },
+
+                          correctAnswers: ["important", "incidents", "did"]
+
+                        
+                },
+
+                {
+
+                          
+                    question: "Q 12.    Installing  %dropdown1%  cameras into a vehicle can  %dropdown2%   threats and violence  %dropdown3%   drivers.",
+
+                          options: {
+
+                                
+                        dropdown1: ["Select an option", "reduce", "CCTV", "against", "camera", "Reduce", "again"],
+
+                                dropdown2: ["Select an option", "reduce", "CCTV", "against", "camera", "Reduce", "again"],
+
+                                dropdown3: ["Select an option", "reduce", "CCTV", "against", "camera", "Reduce", "again"],
+
+
+                              
+                    },
+
+                          correctAnswers: ["CCTV", "reduce", "against"]
+
+                        
+                },
+
+                {
+
+                          
+                    question: "Q 13.   This is because  %dropdown1%    video recording can be   %dropdown2%    evidence when there is a dispute %dropdown3%   a passenger.",
+
+                          options: {
+
+                                
+                        dropdown1: ["Select an option", "width", "A", "useful", "a", "Useful", "with"],
+
+                                dropdown2: ["Select an option", "width", "A", "useful", "a", "Useful", "with"],
+
+                                dropdown3: ["Select an option", "width", "A", "useful", "a", "Useful", "with"],
+
+                              
+                    },
+
+                          correctAnswers: ["a", "useful", "with"]
+
+                        
+                },
+
+                {
+
+                          
+                    question: "Q 14.    TfL requires  %dropdown1%   fitted with a CCTV system to  %dropdown2%  the sign shown below somewhere that is easy %dropdown3%    passengers to see.",
+
+                          options: {
+
+                                
+                        dropdown1: ["Select an option", "All PHVs", "display", "four", "all PHVs", "Display", "for"],
+
+                                dropdown2: ["Select an option", "All PHVs", "display", "four", "all PHVs", "Display", "for"],
+
+                                dropdown3: ["Select an option", "All PHVs", "display", "four", "all PHVs", "Display", "for"],
+
+                              
+                    },
+
+                          correctAnswers: ["all PHVs", "display", "for"]
+
+                        
+                },
+
+                {
+
+                          
+                    question: "Q 15.   'Q15. The vehicle %dropdown1%    can decide where to put this signage, but it must be  %dropdown2%    somewhere that it does not  %dropdown3%     the driver’s view.",
+
+                          options: {
+
+                                
+                        dropdown1: ["Select an option", "driver", "owner", "displayed", "clear", "Displayed", "block"],
+
+                                dropdown2: ["Select an option", "driver", "owner", "displayed", "clear", "Displayed", "block"],
+                                dropdown3: ["Select an option", "driver", "owner", "displayed", "clear", "Displayed", "block"],
+                              
+                    },
+
+                          correctAnswers: ["owner", "displayed", "block"]
+
+                        
+                },
+
+                {
+
+                          
+                    question: "Q 16.     It must also be  %dropdown1%    visible as possible to %dropdown2%    as they enter the vehicle and while  %dropdown3%   travelling in it.",
+
+                          options: {
+
+                                
+                        dropdown1: ["Select an option", "As", "passengers", "as", "they can", "passenger", "they are"],
+
+                                dropdown2: ["Select an option", "As", "passengers", "as", "they can", "passenger", "they are"],
+                                dropdown3: ["Select an option", "As", "passengers", "as", "they can", "passenger", "they are"],
+
+                              
+                    },
+
+                          correctAnswers: ["as", "passengers", "they are"]
+
+                        
+                },
+
+                {
+
+                          
+                    question: "Q 17.   In what circumstance can you ask a passenger to leave your vehicle?",
+
+                          options: {
+
+                                
+                        radio: ["A) If a passenger becomes angry or violent, you can ask them to leave immediately", "B) If a passenger becomes angry or violent and when it is safe to do so", "C) When he asks you to stop at a cash point", "D) If a passenger tells you what route to take"],
+
+                              
+                    },
+
+                          correctAnswers: ["B) If a passenger becomes angry or violent and when it is safe to do so"]
+
+                        
+                },
+
+                {
+
+                          
+                    question: "Q 18.    What should you do if a passenger becomes angry or violent?",
+
+                          options: {
+
+                                
+                        radio: ["A) call Local police station", "B) Stop your vehicle and tell them to get out", "C) Let them know you will not accept such behaviour", "D) Ignore them"],
+
+                              
+                    },
+
+                          correctAnswers: ["C) Let them know you will not accept such behaviour"]
+
+                        
+                },
+
+                {
+
+                          
+                    question: "Q 19.    How can CCTV cameras in vehicles help protect drivers? (2 correct answers)",
+
+                          options: {
+
+                                
+                        checkbox: ["A) They increase passenger aggression", "B) They reduce insurance premiums", "C) They record disputes as evidence", "D) How can CCTV cameras in vehicles help protect drivers"],
+
+                              
+                    },
+
+                          correctAnswers: ["A) They reduce insurance premiums", "B) They record disputes as evidence"]
+                },
+
+                {
+
+                          
+                    question: "Q 20.    what type of behaviour should you never accept?",
+
+                          options: {
+
+                                
+                        radio: ["A) Overly talkative behaviour", "B) Bad behaviour towards you for any reason", "C) passengers give Advice about the route", "D) People offering you tips"],
+
+                              
+                    },
+
+                          correctAnswers: ["B) Bad behaviour towards you for any reason"]
+
+                        
+                },
+
+                {
+
+                          
+                    question: "Q 21.  What is a hate crime?",
+
+                          options: {
+
+                                
+                        radio: ["A) When someone commits a crime against someone based on disability or sex only", "B) when someone behaviour towards you because of your race, faith", "C) When someone commits a crime against someone based on disability, sex, sexual identity, sexual orientation, race, or religion", "D) When someone commits an assault"],
+
+                              
+                    },
+
+                          correctAnswers: ["C) When someone commits a crime against someone based on disability, sex, sexual identity, sexual orientation, race, or religion"]
+
+                        
+                },
+
+                {
+
+                    question: "Q 22.    If a passenger becomes angry or violent in your vehicle? (2 correct answers)",
+                    options: {
+                        checkbox: ["A) Shout at them", "B) You have the right to say that you will not accept that", "C) Ask them to leave if it’s safe to do so", "D) Ignore it"],
+                    },
+                    correctAnswers: ["B) You have the right to say that you will not accept that", "C) Ask them to leave if it’s safe to do so"]
+                },
+
+                {
+
+                          
+                    question: "Q 23.    What can be a useful evidence in a dispute with a passenger?",
+
+                          options: {
+
+                                
+                        radio: ["A) CCTV footage", "B) GPS data", "C) Witnesses", "D) upload footage on youtube"],
+
+                              
+                    },
+
+                          correctAnswers: ["A) CCTV footage"]
+
+                        
+                },
+
+                {
+
+                          
+                    question: "Q 24.   What should you do if a passenger’s friend insists on accompanying them in the vehicle?",
+
+                          options: {
+
+                                
+                        radio: ["A) Continue driving", "B) Ignore the request", "C) A Refuse to take the friend", "D) Allow the friend to join to ensure the passenger’s safety"],
+
+                              
+                    },
+
+                          correctAnswers: ["D) Allow the friend to join to ensure the passenger’s safety"]
+
+                        
+                },
+
+                {
+
+                    question: "Q 25.   What to do if you feel concerned? (2 correct answers)",
+                    options: {
+                        checkbox: ["A)  Sit in your vehicle with the engine off", "B) Use a lone worker device to call for help", "C) Stay in the vehicle and hope it gets better", "D) Get away from the aggressive person"],
+                    },
+                    correctAnswers: ["B)  Use a lone worker device to call for help", "D) Get away from the aggressive person"]
+                },
+
+                {
+
+                    question: "Q 26.    Any offensive or violent behaviour towards you because of your race, faith, sexual orientation, disability, or gender identity is classed as what?",
+                    options: {
+                        radio: ["A) Major Crime", "B) Hate Crime", "C) Not illegal", "D) Minor Crime"],
+                    },
+                    correctAnswers: ["B) Hate Crime"]
+                },
+
+
+                {
+
+                          
+                    question: "Q 27.    What should you do if a passenger is aggressive or violent?",
+
+                          options: {
+
+                                
+                        radio: ["A) Report the incident to the police as soon as possible", "B) Report the incident to operator only", "C) The PHV driver", "D) Ask them to leave without reporting"],
+
+                              
+                    },
+
+                          correctAnswers: ["A) Report the incident to the police as soon as possible"]
+
+                        
+                },
+
+                {
+
+                          
+                    question: "Q 28.    if a passenger is under the influence of drugs or alcohol, and you decided not to refuse the booking? (2 correct answers)",
+
+                          options: {
+
+                                
+                        checkbox: ["A) Insist that a friend comes with them in the vehicle", "B) Get the passenger to call a friend or family to confirm the destination", "C)  Get the passenger to call a friend or family to confirm the destination", "D) Take them and drop them off to the nearest police station"],
+
+                              
+                    },
+
+                          correctAnswers: ["A) Insist that a friend comes with them in the vehicle", "C)  Get the passenger to call a friend or family to confirm the destination"]
+
+                        
+                },
+
+                {
+
+                    question: "Q 29.    What should you do if a passenger is aggressive or violent? ",
+                    options: {
+                        radio: ["A) Report the incident to the police as soon as possible", "B) Report the incident to operator only", "C) The PHV driver", "D) Ask them to leave without reporting"],
+                    },
+                    correctAnswers: ["A) Report the incident to the police as soon as possible"]
+                },
+
+                {
+
+                    question: "Q 30.   What should you do if a passenger cannot communicate clearly to confirm their destination due to alcohol or drugs?",
+                    options: {
+                        radio: ["A)  Ignore the signs", "B) You have the right to refuse to take them in your vehicle", "C) They will behave normal", "D) Drive them home anyway"],
+                    },
+                    correctAnswers: ["B) You have the right to refuse to take them in your vehicle"]
+                },
+
+                {
+                    question: "Q 31.    What are some of the actions you can take to reduce the risk of violence or aggression towards you? ( Select 2 answer)",
+                    options: {
+                        checkbox: ["A) Arguing with the person", "B) Talking calmly and not raising your voice", "C) Explain things to them, not arguing", "D) Drive faster to finish the job"],
+                    },
+                    correctAnswers: ["B) Talking calmly and not raising your voice", "C) Explain things to them, not arguing"]
+                },
+
+                {
+                    question: "Q 32.   If a passenger is aggressive or violent, what information should you give your operator immediately?",
+                    options: {
+                        radio: ["A) send to your opretor passenger photo", "B) A description of what they are wearing", "C) description of clothing, age, gender", "D) The passenger’s full name and address if you know it"],
+                    },
+                    correctAnswers: ["D) The passenger’s full name and address if you know it"]
+                },
+
+                {
+                    question: "Q 33.     How can you determine if a passenger is drunk or under the influence of drugs? ( Select 2 answer )",
+                    options: {
+                        checkbox: ["A) Your operator told you", "B) they’re being aggressive", "C) You can judge on the physical and mental condition of the passenger", "D) Their behaviour"],
+                    },
+                    correctAnswers: ["A) Your operator told you", "C) You can judge on the physical and mental condition of the passenger"]
+                },
+
+                {
+                    question: "Q 34.     When you are recording an incident, you should try and include the following details? ( Select 2 answer )",
+                    options: {
+                        checkbox: ["A) You can check  footage  is clear", "B) Whether the attacker was one of your passengers", "C) When and where the incident happened", "D) You can capture great footage to post on YouTube"],
+                    },
+                    correctAnswers: ["B) Whether the attacker was one of your passengers", "C) When and where the incident happened"]
+                },
+
+                {
+                    question: "Q 35.   Get away from the aggressive person and exit the situation. If necessary, find somewhere safe to stop the vehicle, turn off the engine, take the keys then get out of the vehicle. If the passenger is planning to hurt you, they will probably get out of the vehicle too. This gives you the opportunity to quickly get back in and lock the doors then drive away if it is safe to do so.      <br>      <b style='color:red; text-transform: uppercase;'><i>Which of the following statements is correct?<i></b>",
+                    options: {
+                        radio: ["A) Exit the vehicle and secure themselves in a safe place", "B) Call the police immediately for assistance", "C) Engage in a physical confrontation with the passenger"],
+                    },
+                    correctAnswers: ["A) Exit the vehicle and secure themselves in a safe place"]
+                },
+
+                {
+                    question: "Q 36.   Installing CCTV cameras into a vehicle can reduce threats and violence against drivers. Signs in the vehicle informing passengers that CCTV is used may also help to prevent aggressive or violent behaviour. You can buy a camera or rent one. Although this is an extra cost, having a CCTV camera may reduce insurance premiums. This is because a video recording can be useful evidence when there is a dispute with a passenger.    <br>    <b style='color:red; text-transform: uppercase;'><i>Which of the following statements is correct?<i></b>",
+                    options: {
+                        radio: ["A)  By improving vehicle maintenance", "B)  By increasing passenger satisfaction", "C)  by reduce threats and violence against drivers &  reducing insurance premiums"],
+                    },
+                    correctAnswers: ["C)  by reduce threats and violence against drivers &  reducing insurance premiums"]
+                },
+            ]; // Add your quiz data here
+
+            // let timerInterval;
+
+
+            // Function to create buttons
+            function createQuestionButtons() {
+                const container = document.getElementById('questionButtonsContainer');
+
+                for (let i = 1; i <= totalQuestions; i++) {
+                    const button = document.createElement('button');
+                    button.textContent = i; // Button text as question number
+
+                    // Click event for redirection to specific question
+                    button.addEventListener('click', () => {
+                        goToQuestion(i); // Call function to go to specific question
+                    });
+
+                    container.appendChild(button);
+                }
+            }
+
+            // Function to go to specific question
+            function goToQuestion(questionNumber) {
+                currentQuestionIndex = questionNumber - 1; // Set the current question index
+                loadQuestion(currentQuestionIndex); // Load the specific question
+                currentQuestion = currentQuestionIndex; // Ensure the currentQuestion variable is in sync
+                updateProgress();
+            }
+
+            function loadQuestion(questionIndex) {
+                const questionContainers = document.querySelectorAll('.question-container');
+
+                questionContainers.forEach((container, index) => {
+                    container.classList.toggle('active', index === questionIndex);
+                });
+
+                updateProgress();
+            }
+
+
+            // Call the function to create buttons when the quiz loads
+            createQuestionButtons();
+
+
+            document.addEventListener('DOMContentLoaded', function() {
+                // Timer sirf start hoga jab "Start Quiz" button click hoga
+                document.getElementById('startQuizBtn').addEventListener('click', function() {
+                    // Instruction page ko hide karein aur quiz content aur timer ko show karein
+                    introMessage.style.display = 'none';
+                    document.querySelector('.quiz-content').style.display = 'block';
+                    document.querySelector('.timer-container').style.display = 'block';
+
+                    // Timer ko start karein
+                    startTimer();
+
+                    // Show progress bar aur question buttons
+                    document.getElementById('progress-container').style.display = 'block';
+                    document.getElementById('questionButtonsContainer').style.display = 'block';
+                });
+
+                // Reset button par click karte waqt timer ko reset karein
+                document.getElementById('resetBtn').addEventListener('click', function() {
+                    resetTimer(); // Timer reset karein
+                    location.reload(); // Page reload karke instructions par wapas aaye
+                });
+            });
+
+            // Initial timer variables
+            let timerInterval;
+            let isTimerRunning = false;
+            let timeLeft = 45 * 60; // 45 minutes in seconds
+
+            // Timer start function
+            function startTimer() {
+                if (!isTimerRunning) {
+                    isTimerRunning = true;
+                    timerInterval = setInterval(() => {
+                        if (timeLeft > 0) {
+                            timeLeft--;
+                            const minutes = Math.floor(timeLeft / 60);
+                            const seconds = timeLeft % 60;
+                            document.querySelector('.timer').textContent =
+                                `Time Left: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                        } else {
+                            stopTimer();
+                            submitQuiz(); // Auto-submit when time is up
+                        }
+                    }, 1000);
+                }
+            }
+
+            // Timer stop function
+            function stopTimer() {
+                clearInterval(timerInterval);
+                isTimerRunning = false;
+            }
+
+            // Reset timer function
+            function resetTimer() {
+                stopTimer();
+                timeLeft = 45 * 60;
+                document.querySelector('.timer').textContent = `Time Left: 45:00`;
+            }
+
+
+            document.addEventListener('DOMContentLoaded', function() {
+
+                document.getElementById('startQuizBtn').addEventListener('click', startTimer);
+
+
+                document.querySelector('button[type="submit"]').addEventListener('click', stopTimer);
+            });
+
+
+
+            // window.onload = startTimer;
+
+
+            // Dragging functionality
+            const timerContainer = document.querySelector('.timer-container');
+            let isDragging = false;
+            let offsetX, offsetY;
+
+            timerContainer.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                offsetX = e.clientX - timerContainer.getBoundingClientRect().left;
+                offsetY = e.clientY - timerContainer.getBoundingClientRect().top;
+                document.body.style.cursor = 'grabbing'; // Change cursor to grabbing
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    timerContainer.style.left = `${e.clientX - offsetX}px`;
+                    timerContainer.style.top = `${e.clientY - offsetY}px`;
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                document.body.style.cursor = 'default'; // Reset cursor
+            });
+
+
+            function updateProgress() {
+                const progressPercentage = ((currentQuestion + 1) / totalQuestions) * 100;
+                document.getElementById('progress-bar').style.width = `${progressPercentage}%`;
+                document.getElementById('progress-percentage').textContent = `${Math.round(progressPercentage)}%`;
+            }
+
+            function goToPreviousQuestion() {
+                if (currentQuestion > 0) {
+                    // Hide the current question
+                    document.querySelectorAll('.question-container')[currentQuestion].classList.remove('active');
+
+                    // Decrement currentQuestion to move to the previous question
+                    currentQuestion--;
+
+                    // Show the previous question
+                    // document.querySelectorAll('.question-container')[currentQuestion].classList.add('active');
+                    loadQuestion(currentQuestion);
+
+
+                    updateProgress();
+                }
+            }
+
+
+
+            function generateQuestion(questionIndex) {
+                const questionData = quizData[questionIndex];
+                const quizContainer = document.getElementById('quiz-container');
+
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question-container');
+                if (questionIndex === 0) questionDiv.classList.add('active');
+
+                // let questionText = questionData.question;
+
+                // let questionText = `<strong>${questionData.question}</strong>`;
+
+                let questionText = `<p style="font-weight: bold; text-align: left; margin-bottom: 3%;">${questionData.question}</p>`;
+
+                // Replace placeholders with dropdowns or radio buttons
+                for (let key in questionData.options) {
+                    if (key === 'radio') {
+                        // Radio button handling
+                        questionText += `<div>${questionData.options[key].map(option => `<label><input type="radio" name="question${questionIndex}" value="${option}" onchange="enableNextButton()"> ${option}</label><br>`).join('')}</div>`;
+        } else if (key.startsWith('dropdown')) {
+            // Dropdown handling
+            questionText = questionText.replace(`%${key}%`, `<select class="dropdown" id="${key}-${questionIndex}" style="margin-left: 1%; margin-top: 1%;" onchange="enableNextButton()">
+                ${questionData.options[key].map(option => `<option value="${option}">${option}</option>`).join('')}
+            </select>`);
+        } else if (key === 'checkbox') {
+            // Checkbox handling
+            questionText += `<div>${questionData.options[key].map(option => `<label><input type="checkbox" name="question${questionIndex}" value="${option}" onchange="enableNextButton()"> ${option}</label><br>`).join('')}</div>`;
+        }
+    }
+
+    questionDiv.innerHTML = `<p>${questionText}</p>`;
+    quizContainer.appendChild(questionDiv);
+// 					instruction();
+}
+
+function instruction() {
+	const instruction = document.getElementById("instruction");
+	instruction.innerText = '👆Click on Reset Button if You Want to Retake';
+}
+
+
+
+
+function enableNextButton() {
+    const currentQuestionData = quizData[currentQuestion];
+    const dropdowns = document.querySelectorAll(`select[id^="dropdown"][id$="${currentQuestion}"]`);
+    const radioButtons = document.querySelectorAll(`input[name="question${currentQuestion}"]`);
+    const checkboxes = document.querySelectorAll(`input[name="question${currentQuestion}"]:checked`);
+    
+    let isAnswered = true;
+
+    // Check if any dropdowns are selected
+    if (dropdowns.length > 0) {
+        isAnswered = Array.from(dropdowns).every(dropdown => dropdown.value !== "" && dropdown.value !== "Select"); // Ensure all dropdowns have a selection other than "Select"
+    } 
+
+    // Check if any radio button is selected
+    if (isAnswered && radioButtons.length > 0) {
+        isAnswered = Array.from(radioButtons).some(radio => radio.checked);
+    }
+
+    // Check if at least one checkbox is selected
+    if (isAnswered && checkboxes.length > 0) {
+        isAnswered = checkboxes.length > 0;
+    }
+
+    // Enable or disable the Next button
+    document.getElementById('nextBtn').disabled = false;  
+}
+
+
+function goToNextQuestion() {
+    if (currentQuestion < totalQuestions - 1) {
+        document.querySelectorAll('.question-container')[currentQuestion].classList.remove('active');
+        currentQuestion++;
+        document.querySelectorAll('.question-container')[currentQuestion].classList.add('active');
+        updateProgress();
+    }
+    if (currentQuestion === totalQuestions - 1) {
+        document.getElementById('nextBtn').style.display = 'none';
+        document.getElementById('submitBtn').style.display = 'inline-block';
+    }
+    document.getElementById('submitBtn').style.display = 'inline-block';
+}
+
+// Dropdowns ke pehle option me "Select" add karna
+const dropdowns = document.querySelectorAll('select');
+dropdowns.forEach(dropdown => {
+    const defaultOption = document.createElement('option');
+    defaultOption.value = "Select";
+    defaultOption.text = "Select";
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
+    dropdown.insertBefore(defaultOption, dropdown.firstChild);
+});
+
+
+        
+        
+    
+        function updateQuestionView() {
+            const questionContainers = document.querySelectorAll('.question-container');
+            questionContainers.forEach((container, index) => {
+                container.classList.toggle('active', index === currentQuestion);
+            });
+            document.getElementById('previousBtn').enabled = currentQuestion === 1;
+            document.getElementById('nextBtn').enabled = true; // Reset Next button state
+            document.getElementById('submitBtn').style.display = 'inline-block'; 
+            document.getElementById('progress-bar').style.width = `${((currentQuestion + 1) / totalQuestions) * 100}%`;
+            document.getElementById('progress-percentage').textContent = `${Math.round(((currentQuestion + 1) / totalQuestions) * 100)}%`;
+        }
+    
+        function resetQuiz() {
+            if (confirm('Are you sure you want to reset the quiz?')) {
+        // Clear timer
+        clearInterval(timerInterval);
+        timeLeft = 45 * 60;
+            location.reload();
+            // Show intro message again
+        introMessage.style.display = 'block';
+            }
+        }
+        
+        
+
+        function submitQuiz() {
+    stopTimer(); // Stop the timer
+
+    const resultContainer = document.getElementById('result');
+    const answerReviewContainer = document.getElementById('answer-review');
+    answerReviewContainer.innerHTML = ''; // Clear previous answers
+
+    let score = 0;
+
+    quizData.forEach((questionData, index) => {
+        let userAnswer = '';
+        let isCorrect = false;
+        const correctAnswer = questionData.correctAnswers.join(', ');
+
+        // Determine user answer based on question type
+        if (questionData.options.radio) {
+            const selectedRadio = document.querySelector(`input[name="question${index}"]:checked`);
+            userAnswer = selectedRadio ? selectedRadio.value : 'No answer selected';
+            isCorrect = userAnswer === correctAnswer;
+        } else if (questionData.options.dropdown1) {
+            const dropdowns = ['dropdown1', 'dropdown2', 'dropdown3'];
+            const userAnswersArray = dropdowns.map(dropdown => {
+                const select = document.getElementById(`${dropdown}-${index}`);
+                return select ? select.value : '';
+            });
+
+            const allAnswered = userAnswersArray.every(answer => answer !== '' && answer !== 'Select an option');
+            if (allAnswered) {
+                userAnswer = userAnswersArray.join(', ');
+                isCorrect = userAnswersArray.every((answer, i) => answer === questionData.correctAnswers[i]);
+            } else {
+                userAnswer = 'Incomplete answer';
+                isCorrect = false;
+            }
+        } else if (questionData.options.checkbox) {
+            const selectedCheckboxes = document.querySelectorAll(`input[name="question${index}"]:checked`);
+            userAnswer = selectedCheckboxes.length ? Array.from(selectedCheckboxes).map(checkbox => checkbox.value).join(', ') : 'No answer selected';
+
+            const userAnswersArray = Array.from(selectedCheckboxes).map(checkbox => checkbox.value).sort();
+            const correctAnswersArray = questionData.correctAnswers.sort();
+
+            isCorrect = userAnswersArray.length === correctAnswersArray.length &&
+                        userAnswersArray.every((answer, i) => answer === correctAnswersArray[i]);
+        }
+
+        if (isCorrect) score++;
+
+        const statusText = isCorrect ? "Correct" : "Wrong";
+        const statusClass = isCorrect ? "status-correct" : "status-incorrect";
+        const emoji = isCorrect ? '✔️' : '❌';
+
+        const reviewItem = document.createElement('div');
+        reviewItem.classList.add('answer-review-item');
+        reviewItem.innerHTML = `
+            <strong>Question ${index + 1}:</strong> ${questionData.question}<br>
+            <strong>Your Answer:</strong> <span class="user-answer" style="margin-bottom: 100px">${userAnswer}</span><br>
+            <strong>Correct Answer:</strong> <span class="correct-answer">${correctAnswer}</span><br>
+            <strong class="${statusClass}">Status: ${statusText} <span class="emoji">${emoji}</span></strong>
+            <hr>
+        `;
+        answerReviewContainer.appendChild(reviewItem);
+    });
+
+    const percentage = (score / quizData.length) * 100;
+    const resultText = percentage >= 60 ? 
+        `<span style="color: blue;">Pass</span><span class="congratulations" style="background: linear-gradient(to right, #00c6ff, #0072ff);
+-webkit-background-clip: text;background-clip: text;-webkit-text-fill-color: transparent;font-size: 24px;font-family: Arial, sans-serif; margin-left:10px;font-weight:600;">Congratulations!</span><span class="icon" style="margin-left: 4px;font-size: 30px;">🏆</span>` : 
+        `<span style="color: red;">Fail</span>`;
+
+    resultContainer.innerHTML = `You scored ${score} out of ${quizData.length} (${Math.round(percentage)}%) - ${resultText}`;
+    resultContainer.style.display = 'block'; // Show result
+    answerReviewContainer.style.display = 'block'; // Show answer review
+					document.getElementById("instruction").style.display = 'block';
+					instruction();
+}
+
+
+// Get all necessary elements
+const submitButton = document.querySelector('.button-container button:nth-child(4)');
+const resetButton = document.querySelector('.button-container button:nth-child(1)');
+const previousButton = document.querySelector('.button-container button:nth-child(2)');
+const nextButton = document.querySelector('.button-container button:nth-child(3)');
+const resultContainer = document.querySelector('#result');
+const answerReview = document.querySelector('#answer-review');
+const questionButtons = document.querySelectorAll('#questionButtonsContainer button');
+const quizContainer = document.querySelector('#quiz-container');
+
+// Function to disable all buttons and questions
+function disableButtons() {
+    // Disable navigation buttons
+    submitButton.disabled = true;
+    previousButton.disabled = true;
+    nextButton.disabled = true;
+    
+    // Disable all question buttons
+    questionButtons.forEach(button => {
+        button.disabled = true;
+    });
+
+    // Disable all radio inputs in questions
+    const radioInputs = quizContainer.querySelectorAll('input[type="radio"]');
+    radioInputs.forEach(input => {
+        input.disabled = true;
+    });
+
+    // Disable all dropdowns/select elements
+    const dropdowns = quizContainer.querySelectorAll('select');
+    dropdowns.forEach(dropdown => {
+        dropdown.disabled = true;
+        dropdown.style.backgroundColor = '#f0f0f0';
+        dropdown.style.opacity = '0.5';
+    });
+}
+
+// Function to enable all buttons and questions
+function enableButtons() {
+    // Enable navigation buttons
+    submitButton.disabled = false;
+    previousButton.disabled = false;
+    nextButton.disabled = false;
+    
+    // Enable all question buttons
+    questionButtons.forEach(button => {
+        button.disabled = false;
+    });
+
+    // Enable all radio inputs in questions
+    const radioInputs = quizContainer.querySelectorAll('input[type="radio"]');
+    radioInputs.forEach(input => {
+        input.disabled = false;
+    });
+
+    // Enable all dropdowns/select elements
+    const dropdowns = quizContainer.querySelectorAll('select');
+    dropdowns.forEach(dropdown => {
+        dropdown.disabled = false;
+        dropdown.style.backgroundColor = '';
+        dropdown.style.opacity = '1';
+    });
+    
+    // Hide result and answer review
+    resultContainer.style.display = 'none';
+    answerReview.style.display = 'none';
+}
+
+// Submit button click handler
+submitButton.addEventListener('click', function() {
+    // Disable all buttons and questions
+    disableButtons();
+    
+    // Show result container
+    resultContainer.style.display = 'block';
+    
+    // Show answer review
+    answerReview.style.display = 'block';
+});
+
+// Reset button click handler
+resetButton.addEventListener('click', function() {
+    // Enable all buttons and questions
+    enableButtons();
+});
+
+// Add minimal styling for disabled state
+document.head.insertAdjacentHTML('beforeend', `
+    <style>
+        /* Disabled State Styling */
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        input[type="radio"]:disabled,
+        select:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+
+        input[type="radio"]:disabled + label {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        select:disabled {
+            cursor: not-allowed;
+        }
+        
+        #result {
+            display: none;
+        }
+    </style>
+`);
+
+// Add this block just before the closing script tag
+document.addEventListener('DOMContentLoaded', function() { 
+    // Hide quiz content and timer initially
+    document.querySelector('.quiz-content').style.display = 'none';
+    document.querySelector('.timer-container').style.display = 'none';
+    
+    // Create and show intro message
+    const introMessage = document.createElement('div');
+    introMessage.className = 'quiz-intro';
+    introMessage.innerHTML = `
+        <div class="intro-content" style="text-align: center; padding: 20px; max-width: 600px; margin: 0 auto;">
+            <div class="quiz-rules" style="text-align: left; margin-bottom: 20px;">
+                <h3>Quiz Instructions:</h3>
+                <ul style="list-style-type: disc; padding-left: 20px;">
+                    <li>Total Questions: 36</li>
+                    <li>Time Limit: 45 minutes</li>
+                    <li>You will need to achieve 60% marks to pass the SERU assessment</li>
+                    <li>Once you Click on Start Quiz Button, the timer will begin counting down</li>
+                    <li>You can navigate between questions using Question number buttons</li>
+                    <li>After submission Your results will be displayed</li>
+<li>To Retake,Click on the Reset Button</li>
+                </ul>
+                <h3>Good Luck 👍</h3>
+            </div>
+            <div style="display: flex; justify-content: center; gap: 10px;">
+                <button id="startQuizBtn" style="padding: 10px 20px; font-size: 16px; cursor: pointer; background-color: #007bff; color: white; border: none; border-radius: 5px;">
+                    Start Quiz
+                </button>
+                <button id="readPdfBtn" style="padding: 10px 20px; font-size: 16px; cursor: pointer; background-color: #28a745; color: white; border: none; border-radius: 5px;">
+                    Read the PDF
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.querySelector('.quiz-wrapper').insertBefore(introMessage, document.querySelector('.quiz-content'));
+    
+    // Start Quiz button click handler
+    document.getElementById('startQuizBtn').addEventListener('click', function() {
+        // Hide instruction page
+        introMessage.style.display = 'none';
+        // Show quiz content and timer
+        document.querySelector('.quiz-content').style.display = 'block';
+        document.querySelector('.timer-container').style.display = 'block';
+        // Start the timer
+        startTimer();
+        // Show progress bar and question buttons
+        document.getElementById('progress-container').style.display = 'block';
+        document.getElementById('questionButtonsContainer').style.display = 'block';
+    });
+
+    // Read PDF button click handler
+    document.getElementById('readPdfBtn').addEventListener('click', function() {
+        window.open('https://content.tfl.gov.uk/phv-driver-handbook-v1.pdf', '_blank');
+    });
+
+    // Reset button click handler
+    document.getElementById('resetBtn').addEventListener('click', function() {
+        resetTimer();
+        location.reload();
+    });
+
+    // Submit button click handler
+    document.querySelector('button[type="submit"]').addEventListener('click', stopTimer);
+});
+
+// Initial setup
+for (let i = 0; i < totalQuestions; i++) {
+    generateQuestion(i);
+}
+
+// Remove this line if it exists
+// startTimer(); // Don't call startTimer here
+
+// Keep this
+updateQuestionView(); // Initialize question view
+        </script>
+    </div>
+</body>
+
+</html>
