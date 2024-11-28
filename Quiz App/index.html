@@ -1,30 +1,31 @@
 <html>
+
 <head>
-	<title></title>
-<style>
-.main-container {
+    <title></title>
+    <style>
+        .main-container {
             width: 90%;
             max-width: 900px;
             background: #ffffff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-
-		 /* Center the container */
+            /* Center the container */
             position: center;
-            top: 10%;
-            left: 10%;
-            transform: translate(10%);
+            top: 50%;
+            left: 50%;
+            transform: translate(25%, 15%);
         }
-
+        
         h1 {
             text-align: center;
         }
-
+        
         .quiz-container {
             margin-top: 20px;
         }
- .question-container {
+        
+        .question-container {
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
@@ -39,278 +40,303 @@
             overflow: auto;
             /* Add scroll if content exceeds the container */
         }
-			 .question-container.active {
+        
+        .question-container.active {
             display: block;
             /* Only show the active question */
         }
-
-
-h1 {
-    text-align: center;
-}
-
-.audio-player {
-    margin-bottom: 20px;
-}
-
-#track-title {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-}
-
-audio {
-    width: 100%;
-}
-
-.audio-controls {
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
-    gap: 10px; /* Space between buttons */
-}
-
-.audio-controls button {
-    padding: 10px 15px;
-    font-size: 1em;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    background-color: #007bff; /* Default button color */
-    transition: background-color 0.3s ease;
-}
-
-.audio-controls button:hover {
-    background-color: #0056b3; /* Darker color on hover */
-}
-
-#playlist {
-    list-style: none;
-    padding: 0;
-}
-
-#playlist li {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    cursor: pointer;
-}
-
-#playlist li.active {
-    background-color: #f0f0f0;
-}
-
-#quiz-container {
-    margin-bottom: 40px;
-}
-
-#question {
-    font-size: 20px;
-    margin-bottom: 50px;
-}
-
-#options button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 5px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-#options button:hover {
-    background-color: #0056b3;
-}
-
-.navigation-buttons {
-    display: flex;
-    justify-content: space-between;
-}
-
-.navigation-buttons button {
-    padding: 10px;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-#play-button {
-    background-color: #1aa142;
-}
-
-#play-button:hover {
-    background-color: #9ba7b4;
-}
-
-#stop-button {
-    background-color: #FF0000;
-}
-
-#stop-button:hover {
-    background-color: #9ba7b4;
-}
-
-#prev-button {
-    background-color:#F6358A;
-}
-
-#prev-button:hover {
-    background-color: #9ba7b4;
-}
-
-#next-button {
-    background-color:#0059FF;
-}
-
-#next-button:hover {
-    background-color: #9ba7b4;
-}
-
-#submit-button {
-    background-color: #00FF00;
-}
-
-#submit-button:hover {
-    background-color: #9ba7b4;
-}
-
-#result {
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-}
-
-#retake-button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-top: 20px;
-    background-color:  #FF0000; /* Red color for retake button */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    text-align: center;
-}
-
-#retake-button:hover {
-    background-color:  #FF0000; /* Darker red on hover */
-}
-
-/* Navigation Question Buttons */
-
-#nav-bar {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 5px; /* Space between buttons */
-}
-
-#nav-bar button {
-    padding: 0; /* Remove extra padding */
-    width: 40px; /* Fixed width for compact buttons */
-    height: 30px; /* Fixed height for compact buttons */
-    background-color: #007bff; /* Blue background */
-    color: white;
-    border: none;
-    border-radius: 3px; /* Slightly rounded corners */
-    font-size: 12px; /* Smaller, consistent font size */
-    font-weight: normal; /* Normal weight for clean appearance */
-    text-align: center; /* Center align text horizontally */
-    line-height: 30px; /* Align text vertically by matching button height */
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-#nav-bar button:hover {
-    background-color: #0056b3; /* Slightly darker color on hover */
-    transform: scale(1.05); /* Minimal zoom effect on hover */
-}
-
-#nav-bar button:active {
-    transform: scale(0.95); /* Slight shrink effect on click */
-}
-
-
-
-/* Ensure to add this CSS to your existing stylesheet */
-
-select {
-    width: 150PX; /* Make the select element take the full width of its container */
-    height: 42PX;
-    padding: 10px; /* Add padding for better spacing inside the select box */
-    font-size: 15px; /* Increase the font size */
-    border: 1px solid #ddd; /* Light grey border */
-    border-radius: 5px; /* Rounded corners */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-}
-
-select option {
-    font-size: 16px; /* Increase the font size for options */
-}
-
-
-/* Prevent text selection */
-body {
-    -webkit-user-select: none; /* For Safari and Chrome */
-    -moz-user-select: none; /* For Firefox */
-    -ms-user-select: none; /* For IE10+ */
-    user-select: none; /* Standard syntax */
-}
-
-</style>
+        
+        h1 {
+            text-align: center;
+        }
+        
+        .audio-player {
+            margin-bottom: 20px;
+        }
+        
+        #track-title {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        
+        audio {
+            width: 100%;
+        }
+        
+        .audio-controls {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            /* Space between buttons */
+        }
+        
+        .audio-controls button {
+            padding: 10px 15px;
+            font-size: 1em;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            background-color: #007bff;
+            /* Default button color */
+            transition: background-color 0.3s ease;
+        }
+        
+        .audio-controls button:hover {
+            background-color: #0056b3;
+            /* Darker color on hover */
+        }
+        
+        #playlist {
+            list-style: none;
+            padding: 0;
+        }
+        
+        #playlist li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+        }
+        
+        #playlist li.active {
+            background-color: #f0f0f0;
+        }
+        
+        #quiz-container {
+            margin-bottom: 40px;
+        }
+        
+        #question {
+            font-size: 20px;
+            margin-bottom: 50px;
+        }
+        
+        #options button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 5px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        #options button:hover {
+            background-color: #0056b3;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .navigation-buttons button {
+            padding: 10px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        #play-button {
+            background-color: #1aa142;
+        }
+        
+        #play-button:hover {
+            background-color: #9ba7b4;
+        }
+        
+        #stop-button {
+            background-color: #FF0000;
+        }
+        
+        #stop-button:hover {
+            background-color: #9ba7b4;
+        }
+        
+        #prev-button {
+            background-color: #F6358A;
+        }
+        
+        #prev-button:hover {
+            background-color: #9ba7b4;
+        }
+        
+        #next-button {
+            background-color: #0059FF;
+        }
+        
+        #next-button:hover {
+            background-color: #9ba7b4;
+        }
+        
+        #submit-button {
+            background-color: #00FF00;
+        }
+        
+        #submit-button:hover {
+            background-color: #9ba7b4;
+        }
+        
+        #result {
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        #retake-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #FF0000;
+            /* Red color for retake button */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        #retake-button:hover {
+            background-color: #FF0000;
+            /* Darker red on hover */
+        }
+        /* Navigation Question Buttons */
+        
+        #nav-bar {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 5px;
+            /* Space between buttons */
+        }
+        
+        #nav-bar button {
+            padding: 0;
+            /* Remove extra padding */
+            width: 40px;
+            /* Fixed width for compact buttons */
+            height: 30px;
+            /* Fixed height for compact buttons */
+            background-color: #007bff;
+            /* Blue background */
+            color: white;
+            border: none;
+            border-radius: 3px;
+            /* Slightly rounded corners */
+            font-size: 12px;
+            /* Smaller, consistent font size */
+            font-weight: normal;
+            /* Normal weight for clean appearance */
+            text-align: center;
+            /* Center align text horizontally */
+            line-height: 30px;
+            /* Align text vertically by matching button height */
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        #nav-bar button:hover {
+            background-color: #0056b3;
+            /* Slightly darker color on hover */
+            transform: scale(1.05);
+            /* Minimal zoom effect on hover */
+        }
+        
+        #nav-bar button:active {
+            transform: scale(0.95);
+            /* Slight shrink effect on click */
+        }
+        /* Ensure to add this CSS to your existing stylesheet */
+        
+        select {
+            width: 150PX;
+            /* Make the select element take the full width of its container */
+            height: 42PX;
+            padding: 10px;
+            /* Add padding for better spacing inside the select box */
+            font-size: 15px;
+            /* Increase the font size */
+            border: 1px solid #ddd;
+            /* Light grey border */
+            border-radius: 5px;
+            /* Rounded corners */
+            box-sizing: border-box;
+            /* Include padding and border in the element's total width and height */
+        }
+        
+        select option {
+            font-size: 16px;
+            /* Increase the font size for options */
+        }
+        /* Prevent text selection */
+        
+        body {
+            -webkit-user-select: none;
+            /* For Safari and Chrome */
+            -moz-user-select: none;
+            /* For Firefox */
+            -ms-user-select: none;
+            /* For IE10+ */
+            user-select: none;
+            /* Standard syntax */
+        }
+    </style>
 </head>
+
 <body>
     <div class="main-container">
         <h1>APP-Mock Test</h1>
         <div id="quiz-container" class="quiz-container">
-        
-        <!-- Voice Selection -->
-        <div id="voice-selection">
-            <label for="voice-select">Select Voice:</label>
-            <select id="voice-select">
+
+            <!-- Voice Selection -->
+            <div id="voice-selection">
+                <label for="voice-select">Select Voice:</label>
+                <select id="voice-select">
                 <!-- Options will be dynamically added here -->
             </select>
-        </div>
-        
-        <div id="nav-bar">
-            <!-- Buttons for navigating between questions will be dynamically added here -->
-        </div>
-                 <br>   <br>
-        <!-- Quiz Section -->
-        <div id="quiz-container">
-            <div id="question">Question will appear here</div>
-            
-            <!-- Drop-List Container -->
-            <div id="drop-list-container">
-                <!-- Drop-lists will be dynamically inserted here -->
             </div>
 
-            <div id="options"></div>
-                 <br>  <br>       
-            <!-- Navigation Bar -->
-            <div class="navigation-buttons">
-                <button id="prev-button">Previous</button>
-                <button id="play-button">Play</button>
-                <button id="stop-button">Stop</button>
-                <button id="next-button">Next</button>
-                <button id="submit-button" style="display: none;">Submit</button>
+            <div id="nav-bar">
+                <!-- Buttons for navigating between questions will be dynamically added here -->
             </div>
+            <br> <br>
+            <!-- Quiz Section -->
+            <div id="quiz-container">
+                <div id="question">Question will appear here</div>
 
-            <div id="result"></div>
-            <button id="retake-button" style="display: none;">Retake Quiz</button> <!-- Hidden Retake button -->
+                <!-- Drop-List Container -->
+                <div id="drop-list-container">
+                    <!-- Drop-lists will be dynamically inserted here -->
+                </div>
+
+                <div id="options"></div>
+                <br> <br>
+                <!-- Navigation Bar -->
+                <div class="navigation-buttons">
+                    <button id="prev-button">Previous</button>
+                    <button id="play-button">Play</button>
+                    <button id="stop-button">Stop</button>
+                    <button id="next-button">Next</button>
+                    <button id="submit-button" style="display: none;">Submit</button>
+                </div>
+
+                <div id="result"></div>
+                <button id="retake-button" style="display: none;">Retake Quiz</button>
+                <!-- Hidden Retake button -->
+            </div>
         </div>
     </div>
-</div>
     </div>
-<script>
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
             const questions = [
 
@@ -1134,6 +1160,7 @@ body {
             // Initially disable stop button
             stopButton.disabled = true;
         });
-</script>
+    </script>
 </body>
+
 </html>
