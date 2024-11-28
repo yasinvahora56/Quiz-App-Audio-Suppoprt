@@ -2,8 +2,6 @@
 <head>
 	<title></title>
 <style>
-
-
 .main-container {
             width: 90%;
             max-width: 900px;
@@ -13,10 +11,10 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 
 		 /* Center the container */
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            position: center;
+            top: 10%;
+            left: 10%;
+            transform: translate(10%);
         }
 
         h1 {
@@ -303,7 +301,7 @@ body {
                 <button id="play-button">Play</button>
                 <button id="stop-button">Stop</button>
                 <button id="next-button">Next</button>
-                <button id="submit-button">Submit</button>
+                <button id="submit-button" style="display: none;">Submit</button>
             </div>
 
             <div id="result"></div>
@@ -717,26 +715,37 @@ body {
                 defaultOption.value = '';
                 voiceSelect.appendChild(defaultOption);
 
-                // Add all available voices to the select element
+                // Preferred high-quality voices
+                const preferredVoices = [
+                    'Google UK English Female',
+                    'Google UK English Male',
+                    'Microsoft Zira Desktop - English (United States)',
+                    'Microsoft David Desktop - English (United States)',
+                    'Google US English',
+                    'Google en-AU',
+                    'Google en-GB'
+                ];
+
+                // Add all voices to the dropdown
                 voices.forEach((voice, index) => {
                     const option = document.createElement('option');
                     option.textContent = `${voice.name} (${voice.lang})`;
                     option.value = index;
                     voiceSelect.appendChild(option);
-
-                    // Set default voice (Microsoft Clara or first available)
-                    if (voice.name === 'Microsoft Clara Online (Natural) - English (Canada)') {
-                        voiceSelect.value = index;
-                        selectedVoice = voice;
-                    }
                 });
 
-                // If Microsoft Clara wasn't found, use the first voice
-                if (!selectedVoice && voices.length > 0) {
-                    selectedVoice = voices[0];
-                    voiceSelect.value = 0;
+                // Set a high-quality default voice
+                selectedVoice = voices.find(voice => preferredVoices.includes(voice.name)) || voices[0];
+
+                // Set the selected voice in the dropdown
+                if (selectedVoice) {
+                    const selectedIndex = voices.indexOf(selectedVoice);
+                    voiceSelect.value = selectedIndex;
                 }
             }
+
+
+
 
             // Add event listener for voice selection
             voiceSelect.addEventListener('change', (e) => {
